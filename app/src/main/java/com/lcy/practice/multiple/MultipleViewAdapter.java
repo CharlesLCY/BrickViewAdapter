@@ -324,13 +324,8 @@ public class MultipleViewAdapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
         Object obj = allData.get(position);
         int viewType = managers.indexOfKey(obj.getClass().getName());
-//        if (viewType < 0 && obj instanceof MultipleLayoutSupport) {
-//            viewType = managers.indexOfKey(obj.getClass().getName() + ((MultipleLayoutSupport) obj).getMultipleLayoutCode());
-//            multipleLayoutCodes.put(viewType, ((MultipleLayoutSupport) obj).getMultipleLayoutCode());
-//        }
-
-        if (obj instanceof MultipleLayoutSupport) {
-            viewType = managers.indexOfKey(obj.getClass().getName());
+        if (viewType < 0 && obj instanceof MultipleLayoutSupport) {
+            viewType = managers.indexOfKey(obj.getClass().getName() + ((MultipleLayoutSupport) obj).getMultipleLayoutCode());
             multipleLayoutCodes.put(viewType, ((MultipleLayoutSupport) obj).getMultipleLayoutCode());
         }
 

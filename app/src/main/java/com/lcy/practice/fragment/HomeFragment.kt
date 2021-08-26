@@ -40,6 +40,6 @@ class HomeFragment : Fragment() {
         }
         adapter.initRecyclerView(binding.rv)
         adapter.setAllData(listData)
-        adapter.register(User::class.java, HomeViewManager(), listData.map { (it as User).multipleLayoutCode })
+        adapter.register(User::class.java, HomeViewManager())
     }
 }
