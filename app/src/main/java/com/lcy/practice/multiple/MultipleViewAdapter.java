@@ -34,7 +34,7 @@ public class MultipleViewAdapter extends RecyclerView.Adapter {
     //////////////////// 构造方法
     ////////////////////////////////////////////////////////////
 
-    private static final String TAG = "Multiple";
+    private static final String TAG = "BrickViewAdapter";
 
     ////////////////////////////////////////////////////////////
     //////////////////// 成员变量
@@ -324,6 +324,7 @@ public class MultipleViewAdapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
         Object obj = allData.get(position);
         int viewType = managers.indexOfKey(obj.getClass().getName());
+
         if (viewType < 0 && obj instanceof MultipleLayoutSupport) {
             viewType = managers.indexOfKey(obj.getClass().getName() + ((MultipleLayoutSupport) obj).getMultipleLayoutCode());
             multipleLayoutCodes.put(viewType, ((MultipleLayoutSupport) obj).getMultipleLayoutCode());
@@ -333,8 +334,15 @@ public class MultipleViewAdapter extends RecyclerView.Adapter {
             for (String key : managers.keySet()) {
                 Logger.i(TAG, String.format("Managers All Key is >>>> %s", key));
             }
-            Logger.w(TAG, String.format("未找到 %s 相关Manager是否未注册 ???", obj.getClass().getName()));
-            throw new RuntimeException(TAG + " >>>> 注册错误");
+            Logger.w(TAG, String.format("未找到<%s>相关ViewManager是否未注册???", obj.getClass().getName()));
+
+            throw new RuntimeException(String.format(TAG + " >>>> ViewManager注册错误！\n未找到<%s>对应的ViewManager", obj.getClass().getName()));
+        }
+
+        if (viewType >= 0 && obj instanceof MultipleLayoutSupport) {
+            managers.put(obj.getClass().getName() + ((MultipleLayoutSupport) obj).getMultipleLayoutCode(), managers.get(obj.getClass().getName()));
+            viewType = managers.indexOfKey(obj.getClass().getName() + ((MultipleLayoutSupport) obj).getMultipleLayoutCode());
+            multipleLayoutCodes.put(viewType, ((MultipleLayoutSupport) obj).getMultipleLayoutCode());
         }
         return viewType;
     }

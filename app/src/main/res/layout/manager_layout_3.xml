@@ -10,6 +10,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@mipmap/ic_launcher"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintEnd_toStartOf="@+id/image2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

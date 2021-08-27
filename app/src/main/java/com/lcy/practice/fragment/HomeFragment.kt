@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.lcy.practice.databinding.FragmentHomeBinding
+import com.lcy.practice.entity.New
 import com.lcy.practice.entity.User
 import com.lcy.practice.manager.HomeViewManager
+import com.lcy.practice.manager.NewsViewManager
 import com.lcy.practice.multiple.MultipleViewAdapter
 
 /**
@@ -37,9 +39,16 @@ class HomeFragment : Fragment() {
             user.type = i
             user.name = "我真的无语了$i"
             listData.add(user)
+
+            if (i == 3) {
+                val news = New()
+                news.title = "这是一个固定的布局哈哈哈"
+                listData.add(news)
+            }
         }
         adapter.initRecyclerView(binding.rv)
         adapter.setAllData(listData)
         adapter.register(User::class.java, HomeViewManager())
+        adapter.register(New::class.java, NewsViewManager())
     }
 }
