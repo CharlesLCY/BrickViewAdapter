@@ -21,7 +21,7 @@ import java.util.List;
  * Create By 吴荣 at 2018-07-10 11:49
  */
 @SuppressWarnings({"WeakerAccess", "JavaDoc"})
-public abstract class MultipleViewManager<T> {
+public abstract class BrickViewManager<T> {
 
     /**
      * 获取 Layout 资源 ID.
@@ -30,15 +30,6 @@ public abstract class MultipleViewManager<T> {
      */
     @LayoutRes
     public abstract int getLayoutResId(int layoutCode);
-
-    /**
-     * 绑定 Item 资源.
-     *
-     * @param holder   VH 对象.
-     * @param position 点击的视图对应的 item 位置.
-     * @param data     点击的视图对应的 item 数据.
-     */
-    public abstract void onBindViewHolder(@NonNull MultipleViewHolder holder, int position, @NonNull T data);
 
     /**
      * 绑定 Item 资源.
@@ -123,5 +114,4 @@ public abstract class MultipleViewManager<T> {
     public View getHolderView(Context context) {
         return new View(context);
     }
-
 }

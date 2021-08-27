@@ -29,7 +29,7 @@ import java.util.Locale;
  * Multiple Adapter 类,用于管理 Multiple 类.
  */
 @SuppressWarnings({"unchecked", "ConstantConditions", "unused"})
-public class MultipleViewAdapter extends RecyclerView.Adapter<MultipleViewHolder> {
+public class BrickViewAdapter extends RecyclerView.Adapter<MultipleViewHolder> {
 
     ////////////////////////////////////////////////////////////
     //////////////////// 构造方法
@@ -77,7 +77,7 @@ public class MultipleViewAdapter extends RecyclerView.Adapter<MultipleViewHolder
     /**
      * Manager 映射.
      */
-    private final ArrayMap<String, MultipleViewManager> managers;
+    private final ArrayMap<String, BrickViewManager> managers;
 
     /**
      * 布局 LayoutCode 映射.
@@ -97,7 +97,7 @@ public class MultipleViewAdapter extends RecyclerView.Adapter<MultipleViewHolder
     /**
      * 无参构造器
      */
-    public MultipleViewAdapter() {
+    public BrickViewAdapter() {
         this.managers = new ArrayMap<>();
         this.multipleLayoutCodes = new SparseArrayCompat<>();
     }
@@ -198,9 +198,9 @@ public class MultipleViewAdapter extends RecyclerView.Adapter<MultipleViewHolder
         // 初始化默认动画执行器.
         DefaultItemAnimator defaultItemAnimator = new DefaultItemAnimator();
         // 设置新增动画时长为 1 秒.
-        defaultItemAnimator.setAddDuration(1000);
+        defaultItemAnimator.setAddDuration(300);
         // 设置删除动画时长为 1 秒.
-        defaultItemAnimator.setRemoveDuration(1000);
+        defaultItemAnimator.setRemoveDuration(300);
         // 绑定默认动画执行器.
         recyclerView.setItemAnimator(defaultItemAnimator);
     }
@@ -213,7 +213,7 @@ public class MultipleViewAdapter extends RecyclerView.Adapter<MultipleViewHolder
      * @param <T>     Item 泛型约束.
      * @param <R>     管理器泛型约束.
      */
-    public <T, R extends MultipleViewManager<T>> void register(@NonNull Class<T> cls, @NonNull R manager) {
+    public <T, R extends BrickViewManager<T>> void register(@NonNull Class<T> cls, @NonNull R manager) {
         managers.put(cls.getName(), manager);
 
     }
@@ -227,7 +227,7 @@ public class MultipleViewAdapter extends RecyclerView.Adapter<MultipleViewHolder
      * @param <T>         Item 泛型约束.
      * @param <R>         管理器泛型约束.
      */
-    public <T, R extends MultipleViewManager<T>> void register(@NonNull Class<T> cls, @NonNull R manager, int... layoutCodes) {
+    public <T, R extends BrickViewManager<T>> void register(@NonNull Class<T> cls, @NonNull R manager, int... layoutCodes) {
         for (int layoutCode : layoutCodes) {
             managers.put(cls.getName() + layoutCode, manager);
         }
@@ -269,7 +269,7 @@ public class MultipleViewAdapter extends RecyclerView.Adapter<MultipleViewHolder
         // 获取指定下标的数据
         Object obj = allData.get(position);
         // 尝试通过类名从管理器映射中获取管理器对象
-        MultipleViewManager manager = managers.get(obj.getClass().getName());
+        BrickViewManager manager = managers.get(obj.getClass().getName());
         // 如果获取失败, 则判断是否支持多布局模式,如果支持则重新获取多布局模式管理器.
         if (null == manager && obj instanceof MultipleLayoutSupport) {
             // 通过多布局模式重新在管理器映射中获取管理器对象实例.
@@ -277,7 +277,7 @@ public class MultipleViewAdapter extends RecyclerView.Adapter<MultipleViewHolder
         }
         // 如果管理器依然为空,则使用未注册管理器,避免发生异常造成闪退.
         if (null == manager) {
-            manager = new UnregisteredMultipleViewManager();
+            manager = new UnregisteredBrickViewManager();
             Logger.w(TAG, String.format(
                     Locale.getDefault(),
                     "数据:\r\n%s\r\nManager Key :%s\r\n%s%d",
@@ -296,7 +296,6 @@ public class MultipleViewAdapter extends RecyclerView.Adapter<MultipleViewHolder
         }
         if (payloads == null || payloads.size() <= 0) {
             // 通过管理器,绑定 VH 对象实例.
-            manager.onBindViewHolder(holder, position, obj);
             manager.onBindViewHolder(holder, allData.size(), position, obj);
         } else {
             manager.onBindViewHolder(holder, position, obj, payloads);

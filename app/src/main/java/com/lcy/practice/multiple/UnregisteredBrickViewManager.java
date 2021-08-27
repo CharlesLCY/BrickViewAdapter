@@ -12,7 +12,7 @@ import com.lcy.practice.R;
  * <p>
  * Create By 吴荣 at 2018-09-25 17:11
  */
-public class UnregisteredMultipleViewManager extends MultipleViewManager<UnregisteredException> {
+public class UnregisteredBrickViewManager extends BrickViewManager<UnregisteredException> {
 
     /**
      * 获取 Layout 资源 ID.
@@ -32,7 +32,7 @@ public class UnregisteredMultipleViewManager extends MultipleViewManager<Unregis
      * @param data     点击的视图对应的 item 数据.
      */
     @Override
-    public void onBindViewHolder(@NonNull MultipleViewHolder holder, int position, @NonNull UnregisteredException data) {
+    public void onBindViewHolder(@NonNull MultipleViewHolder holder, int count, int position, @NonNull UnregisteredException data) {
         TextView title = holder.getView(R.id.text_view_title);
         TextView message = holder.getView(R.id.text_view_message);
         title.setText(data.title);
