@@ -9,12 +9,12 @@ import android.view.View
  * @email  15708478830@163.com
  **/
 abstract class BaseBrickViewManager<T> : BrickViewManager<T>() {
-    private var onItemClick: ((holder: MultipleViewHolder?, v: View?, data: Any?, position: Int) -> Unit)? = null
-    private var onItemLongClick: ((holder: MultipleViewHolder?, v: View?, data: Any?, position: Int) -> Unit)? = null
+    private var onItemClick: ((holder: BrickViewHolder?, v: View?, data: Any?, position: Int) -> Unit)? = null
+    private var onItemLongClick: ((holder: BrickViewHolder?, v: View?, data: Any?, position: Int) -> Unit)? = null
 
-    abstract fun onBindVH(holder: MultipleViewHolder, count: Int, position: Int, data: T)
+    abstract fun onBindVH(holder: BrickViewHolder, count: Int, position: Int, data: T)
 
-    override fun onBindViewHolder(holder: MultipleViewHolder, count: Int, position: Int, data: T) {
+    override fun onBindViewHolder(holder: BrickViewHolder, count: Int, position: Int, data: T) {
         super.onBindViewHolder(holder, count, position, data)
         setupClickView(getClickViewId(), holder, position, data)
         setupLongClickView(getLongClickViewId(), holder, position, data)
@@ -22,7 +22,7 @@ abstract class BaseBrickViewManager<T> : BrickViewManager<T>() {
     }
 
     override fun onBindViewHolder(
-        holder: MultipleViewHolder,
+        holder: BrickViewHolder,
         position: Int,
         data: T,
         payloads: MutableList<Any?>?
@@ -32,7 +32,7 @@ abstract class BaseBrickViewManager<T> : BrickViewManager<T>() {
         setupLongClickView(getLongClickViewId(), holder, position, data)
     }
 
-    override fun onBindViewEvent(holder: MultipleViewHolder, position: Int, data: T) {
+    override fun onBindViewEvent(holder: BrickViewHolder, position: Int, data: T) {
         super.onBindViewEvent(holder, position, data)
         setupClickView(getClickViewId(), holder, position, data)
         setupLongClickView(getLongClickViewId(), holder, position, data)
@@ -41,28 +41,28 @@ abstract class BaseBrickViewManager<T> : BrickViewManager<T>() {
     /**
      * 设置item点击事件
      */
-    fun setOnItemClickListener(onItemClick: (holder: MultipleViewHolder?, v: View?, data: Any?, position: Int) -> Unit) {
+    fun setOnItemClickListener(onItemClick: (holder: BrickViewHolder?, v: View?, data: Any?, position: Int) -> Unit) {
         this.onItemClick = onItemClick
     }
 
     /**
      * 点击事件触发
      */
-    private fun onItemClick(holder: MultipleViewHolder?, v: View?, data: Any?, position: Int) {
+    private fun onItemClick(holder: BrickViewHolder?, v: View?, data: Any?, position: Int) {
         onItemClick?.invoke(holder, v, data, position)
     }
 
     /**
      * 设置item长按事件
      */
-    fun setOnItemLongClickListener(onItemLongClick: (holder: MultipleViewHolder?, v: View?, data: Any?, position: Int) -> Unit) {
+    fun setOnItemLongClickListener(onItemLongClick: (holder: BrickViewHolder?, v: View?, data: Any?, position: Int) -> Unit) {
         this.onItemLongClick = onItemLongClick
     }
 
     /**
      * 长按事件触发
      */
-    private fun onItemLongClick(holder: MultipleViewHolder?, v: View?, data: Any?, position: Int) {
+    private fun onItemLongClick(holder: BrickViewHolder?, v: View?, data: Any?, position: Int) {
         onItemLongClick?.invoke(holder, v, data, position)
     }
 
@@ -76,7 +76,7 @@ abstract class BaseBrickViewManager<T> : BrickViewManager<T>() {
      */
     open fun getLongClickViewId(): MutableList<Int> = mutableListOf()
 
-    private fun setupClickView(ids: MutableList<Int>, holder: MultipleViewHolder, position: Int, data: T) {
+    private fun setupClickView(ids: MutableList<Int>, holder: BrickViewHolder, position: Int, data: T) {
         if (ids.isNullOrEmpty()) return
 
         ids.forEach {
@@ -87,7 +87,7 @@ abstract class BaseBrickViewManager<T> : BrickViewManager<T>() {
         }
     }
 
-    private fun setupLongClickView(ids: MutableList<Int>, holder: MultipleViewHolder, position: Int, data: T) {
+    private fun setupLongClickView(ids: MutableList<Int>, holder: BrickViewHolder, position: Int, data: T) {
         if (ids.isNullOrEmpty()) return
 
         ids.forEach {

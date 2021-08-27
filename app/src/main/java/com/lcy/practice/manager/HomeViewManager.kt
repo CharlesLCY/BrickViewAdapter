@@ -3,7 +3,7 @@ package com.lcy.practice.manager
 import android.widget.TextView
 import com.lcy.practice.R
 import com.lcy.practice.entity.User
-import com.lcy.practice.multiple.MultipleViewHolder
+import com.lcy.practice.multiple.BrickViewHolder
 import com.lcy.practice.multiple.BaseBrickViewManager
 
 /**
@@ -25,7 +25,7 @@ class HomeViewManager : BaseBrickViewManager<User>() {
         R.id.text
     )
 
-    override fun onBindVH(holder: MultipleViewHolder, count: Int, position: Int, data: User) {
+    override fun onBindVH(holder: BrickViewHolder, count: Int, position: Int, data: User) {
         val text: TextView? = holder.getView(R.id.text)
         text?.text = data.name
     }

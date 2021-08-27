@@ -26,7 +26,7 @@ public abstract class BrickViewManager<T> {
     /**
      * 获取 Layout 资源 ID.
      *
-     * @param layoutCode {@link MultipleLayoutSupport} 接口获取的布局编号,由数据对象实现,可用于实现同数据的不同布局.
+     * @param layoutCode {@link BrickViewSupport} 接口获取的布局编号,由数据对象实现,可用于实现同数据的不同布局.
      */
     @LayoutRes
     public abstract int getLayoutResId(int layoutCode);
@@ -39,7 +39,7 @@ public abstract class BrickViewManager<T> {
      * @param position 点击的视图对应的 item 位置.
      * @param data     点击的视图对应的 item 数据.
      */
-    public void onBindViewHolder(@NonNull MultipleViewHolder holder, int count, int position, @NonNull T data) {
+    public void onBindViewHolder(@NonNull BrickViewHolder holder, int count, int position, @NonNull T data) {
     }
     /**
      * 绑定 Item 资源.
@@ -48,7 +48,7 @@ public abstract class BrickViewManager<T> {
      * @param position 点击的视图对应的 item 位置.
      * @param data     点击的视图对应的 item 数据.
      */
-    public void onBindViewHolder(@NonNull MultipleViewHolder holder, int position, @NonNull T data, List payloads) {
+    public void onBindViewHolder(@NonNull BrickViewHolder holder, int position, @NonNull T data, List payloads) {
         // 此处默认为空实现,子类按需实现当前方法.
     }
 
@@ -60,7 +60,7 @@ public abstract class BrickViewManager<T> {
      * @param position 点击的视图对应的 item 位置.
      * @param data     点击的视图对应的 item 数据.
      */
-    public void onBindViewEvent(@NonNull MultipleViewHolder holder, int position, @NonNull T data) {
+    public void onBindViewEvent(@NonNull BrickViewHolder holder, int position, @NonNull T data) {
         // 此处默认为空实现,子类按需实现当前方法.
     }
 
@@ -70,11 +70,11 @@ public abstract class BrickViewManager<T> {
      * @param parent 父视图.
      * @return 返回新的 VH 对象.
      */
-    MultipleViewHolder createNewMultipleViewHolder(@NonNull ViewGroup parent, int layoutCode) {
+    BrickViewHolder createNewMultipleViewHolder(@NonNull ViewGroup parent, int layoutCode) {
         if (getLayoutResId(layoutCode) == 0) {
-            return new MultipleViewHolder(layoutCode, getHolderView(parent.getContext()) == null ? new View(parent.getContext()) : getHolderView(parent.getContext()));
+            return new BrickViewHolder(layoutCode, getHolderView(parent.getContext()) == null ? new View(parent.getContext()) : getHolderView(parent.getContext()));
         } else {
-            return new MultipleViewHolder(layoutCode, LayoutInflater.from(parent.getContext())
+            return new BrickViewHolder(layoutCode, LayoutInflater.from(parent.getContext())
                   .inflate(getLayoutResId(layoutCode), parent, false)
             );
         }

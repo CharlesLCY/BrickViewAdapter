@@ -8,7 +8,7 @@ import android.view.View
  * @date   2020-01-07 10:41
  * @email  15708478830@163.com
  **/
-open class MultipleViewDragListenerAdapter : OnMultipleViewDragChangeListener {
+open class BrickViewDragListenerAdapter : OnBrickViewDragListener {
     override fun onItemIdle(itemView: View?) {
     }
 

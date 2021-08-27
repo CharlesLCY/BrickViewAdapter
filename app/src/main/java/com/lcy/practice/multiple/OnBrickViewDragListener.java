@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * 拖拽/滑动回掉
  */
-public interface OnMultipleViewDragChangeListener {
+public interface OnBrickViewDragListener {
 
     void onItemIdle(View itemView);
 

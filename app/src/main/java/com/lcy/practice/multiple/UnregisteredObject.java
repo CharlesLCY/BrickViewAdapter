@@ -5,7 +5,7 @@ package com.lcy.practice.multiple;
  * <p>
  * Create By 吴荣 at 2018-09-25 15:46.
  */
-public class UnregisteredException {
+public class UnregisteredObject {
 
     /**
      * 标题.
@@ -23,7 +23,7 @@ public class UnregisteredException {
      * @param title   标题
      * @param message 消息
      */
-    public UnregisteredException(String title, String message) {
+    public UnregisteredObject(String title, String message) {
         this.title = title;
         this.message = message;
     }

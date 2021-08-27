@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * @Time 11:49
  */
 @SuppressWarnings("JavaDoc")
-public final class MultipleViewHolder extends RecyclerView.ViewHolder {
+public final class BrickViewHolder extends RecyclerView.ViewHolder {
 
     /**
      * 用于记录布局编号,避免复用问题.
@@ -30,7 +30,7 @@ public final class MultipleViewHolder extends RecyclerView.ViewHolder {
     /**
      * 构造器
      */
-    MultipleViewHolder(int layoutCode, View itemView) {
+    BrickViewHolder(int layoutCode, View itemView) {
         super(itemView);
         this.layoutCode = layoutCode;
         this.caches = new SparseArray<>();

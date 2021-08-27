@@ -12,12 +12,12 @@ import com.lcy.practice.R;
  * <p>
  * Create By 吴荣 at 2018-09-25 17:11
  */
-public class UnregisteredBrickViewManager extends BrickViewManager<UnregisteredException> {
+public class UnregisteredBrickViewManager extends BrickViewManager<UnregisteredObject> {
 
     /**
      * 获取 Layout 资源 ID.
      *
-     * @param layoutCode {@link MultipleLayoutSupport} 接口获取的布局编号,由数据对象实现,可用于实现同数据的不同布局.
+     * @param layoutCode {@link BrickViewSupport} 接口获取的布局编号,由数据对象实现,可用于实现同数据的不同布局.
      */
     @Override
     public int getLayoutResId(int layoutCode) {
@@ -32,7 +32,7 @@ public class UnregisteredBrickViewManager extends BrickViewManager<UnregisteredE
      * @param data     点击的视图对应的 item 数据.
      */
     @Override
-    public void onBindViewHolder(@NonNull MultipleViewHolder holder, int count, int position, @NonNull UnregisteredException data) {
+    public void onBindViewHolder(@NonNull BrickViewHolder holder, int count, int position, @NonNull UnregisteredObject data) {
         TextView title = holder.getView(R.id.text_view_title);
         TextView message = holder.getView(R.id.text_view_message);
         title.setText(data.title);
