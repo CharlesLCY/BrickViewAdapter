@@ -3,10 +3,9 @@ package com.lcy.practice.multiple
 import android.view.View
 
 /**
- * Desc: 列表拖动监听器基础实现类
- * @author Charlie叶晨
- * @date   2020-01-07 10:41
- * @email  15708478830@163.com
+ * <Desc> 列表拖动监听器基础实现类
+ * Created by CharlesLee on 2021/8/27
+ * 15708478830@163.com
  **/
 open class BrickViewDragListenerAdapter : OnBrickViewDragListener {
     override fun onItemIdle(itemView: View?) {

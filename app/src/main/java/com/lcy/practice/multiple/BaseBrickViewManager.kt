@@ -3,10 +3,10 @@ package com.lcy.practice.multiple
 import android.view.View
 
 /**
- * Desc:
- * @author Charlie叶晨
- * @date   2020/6/17 12:08
- * @email  15708478830@163.com
+ * <Desc> 搭建积木的基础父类，开发者通常应继承该父类创建的列表ViewManager
+ * 扩展BrickViewManager，增加View点击事件
+ * Created by CharlesLee on 2021/8/27
+ * 15708478830@163.com
  **/
 abstract class BaseBrickViewManager<T> : BrickViewManager<T>() {
     private var onItemClick: ((holder: BrickViewHolder?, v: View?, data: Any?, position: Int) -> Unit)? = null

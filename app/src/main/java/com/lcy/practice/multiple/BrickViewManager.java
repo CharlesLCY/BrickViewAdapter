@@ -13,13 +13,14 @@ import androidx.annotation.NonNull;
 import java.util.List;
 
 /**
- * MultipleViewManager 类,主要负责处理相同类型的 ItemView .
+ * <Desc> BrickViewManager类,主要负责处理相同类型的 ItemView.
  * <p>
  * 在使用时需要指定泛型约束,并将 Item 中所有的视图进行了缓存,在需要重用时取出,减少每次初始化操作的时间消耗,
  * 是典型的空间换时间,能大幅提升列表滑动时的流畅性.
  * <p>
- * Create By 吴荣 at 2018-07-10 11:49
- */
+ * Created by CharlesLee on 2021/8/27
+ * 15708478830@163.com
+ **/
 @SuppressWarnings({"WeakerAccess", "JavaDoc"})
 public abstract class BrickViewManager<T> {
 

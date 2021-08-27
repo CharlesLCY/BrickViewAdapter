@@ -1,9 +1,9 @@
 package com.lcy.practice.multiple;
 
 /**
- * Multiple View 回收监听.
- * <p>
- * Create By 吴荣 at 2019-01-10 15:50.
+ * <Desc> Brick View 回收监听.
+ * Created by CharlesLee on 2021/8/27
+ * 15708478830@163.com
  */
 public interface OnBrickViewRecycledListener {
 

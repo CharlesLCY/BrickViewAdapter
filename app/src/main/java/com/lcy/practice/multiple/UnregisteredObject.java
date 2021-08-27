@@ -1,9 +1,9 @@
 package com.lcy.practice.multiple;
 
 /**
- * 未注册异常信息.
- * <p>
- * Create By 吴荣 at 2018-09-25 15:46.
+ * <Desc> 未注册异常信息.
+ * Created by CharlesLee on 2021/8/27
+ * 15708478830@163.com
  */
 public class UnregisteredObject {
 

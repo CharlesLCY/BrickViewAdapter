@@ -5,7 +5,9 @@ import android.view.View;
 import java.util.List;
 
 /**
- * 拖拽/滑动回掉
+ * <Desc> 列表 Item 拖拽/滑动回调
+ * Created by CharlesLee on 2021/8/27
+ * 15708478830@163.com
  */
 public interface OnBrickViewDragListener {
 

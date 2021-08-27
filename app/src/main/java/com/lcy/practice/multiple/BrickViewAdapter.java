@@ -26,7 +26,9 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Multiple Adapter 类,用于管理 Multiple 类.
+ * <Desc> BrickViewAdapter类用于管理BrickViewManager类.
+ * Created by Charles Lee on 2021/8/27
+ * 15708478830@163.com
  */
 @SuppressWarnings({"unchecked", "ConstantConditions", "unused"})
 public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {

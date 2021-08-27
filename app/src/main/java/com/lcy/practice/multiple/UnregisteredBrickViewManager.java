@@ -8,9 +8,9 @@ import com.lcy.practice.R;
 
 
 /**
- * 未注册 Item 管理器.
- * <p>
- * Create By 吴荣 at 2018-09-25 17:11
+ * <Desc> 未注册 Item 管理器.
+ * Created by CharlesLee on 2021/8/27
+ * 15708478830@163.com
  */
 public class UnregisteredBrickViewManager extends BrickViewManager<UnregisteredObject> {
 
