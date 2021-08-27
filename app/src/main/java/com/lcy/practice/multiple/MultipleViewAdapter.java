@@ -1,5 +1,6 @@
 package com.lcy.practice.multiple;
 
+import android.annotation.SuppressLint;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -27,8 +28,8 @@ import java.util.Locale;
 /**
  * Multiple Adapter 类,用于管理 Multiple 类.
  */
-@SuppressWarnings({"JavaDoc", "unchecked", "ConstantConditions", "unused"})
-public class MultipleViewAdapter extends RecyclerView.Adapter {
+@SuppressWarnings({"unchecked", "ConstantConditions", "unused"})
+public class MultipleViewAdapter extends RecyclerView.Adapter<MultipleViewHolder> {
 
     ////////////////////////////////////////////////////////////
     //////////////////// 构造方法
@@ -76,12 +77,12 @@ public class MultipleViewAdapter extends RecyclerView.Adapter {
     /**
      * Manager 映射.
      */
-    private ArrayMap<String, MultipleViewManager> managers;
+    private final ArrayMap<String, MultipleViewManager> managers;
 
     /**
      * 布局 LayoutCode 映射.
      */
-    private SparseArrayCompat<Integer> multipleLayoutCodes;
+    private final SparseArrayCompat<Integer> multipleLayoutCodes;
 
     /**
      * 侧滑监听.
@@ -106,6 +107,7 @@ public class MultipleViewAdapter extends RecyclerView.Adapter {
      *
      * @param listData 持有的数据源,适配器中不会初始化该数据源,由外部传入.
      */
+    @SuppressLint("NotifyDataSetChanged")
     public void setAllData(List<Object> listData) {
         // 绑定数据
         allData = listData;
@@ -143,10 +145,10 @@ public class MultipleViewAdapter extends RecyclerView.Adapter {
      * @param holder Holder.
      */
     @Override
-    public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
+    public void onViewRecycled(@NonNull MultipleViewHolder holder) {
         super.onViewRecycled(holder);
         if (null != onMultipleViewRecycledListener) {
-            onMultipleViewRecycledListener.onViewRecycled((MultipleViewHolder) holder);
+            onMultipleViewRecycledListener.onViewRecycled(holder);
         }
     }
 
@@ -240,7 +242,7 @@ public class MultipleViewAdapter extends RecyclerView.Adapter {
      */
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MultipleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return managers.get(managers.keyAt(viewType)).createNewMultipleViewHolder(parent, multipleLayoutCodes.get(viewType) == null ? -1 : multipleLayoutCodes.get(viewType));
     }
 
@@ -251,7 +253,7 @@ public class MultipleViewAdapter extends RecyclerView.Adapter {
      * @param position 指定位置的下标.
      */
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MultipleViewHolder holder, int position) {
         onBindViewHolder(holder, position, null);
     }
 
@@ -263,7 +265,7 @@ public class MultipleViewAdapter extends RecyclerView.Adapter {
      * @param payloads 指定更新部分view数据
      */
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @Nullable List payloads) {
+    public void onBindViewHolder(@NonNull MultipleViewHolder holder, int position, @Nullable List payloads) {
         // 获取指定下标的数据
         Object obj = allData.get(position);
         // 尝试通过类名从管理器映射中获取管理器对象
@@ -294,14 +296,14 @@ public class MultipleViewAdapter extends RecyclerView.Adapter {
         }
         if (payloads == null || payloads.size() <= 0) {
             // 通过管理器,绑定 VH 对象实例.
-            manager.onBindViewHolder((MultipleViewHolder) holder, position, obj);
-            manager.onBindViewHolder((MultipleViewHolder) holder, allData.size(), position, obj);
+            manager.onBindViewHolder(holder, position, obj);
+            manager.onBindViewHolder(holder, allData.size(), position, obj);
         } else {
-            manager.onBindViewHolder((MultipleViewHolder) holder, position, obj, payloads);
+            manager.onBindViewHolder(holder, position, obj, payloads);
         }
 
         // 通过管理器,绑定 VH 事件处理.
-        manager.onBindViewEvent((MultipleViewHolder) holder, position, obj);
+        manager.onBindViewEvent(holder, position, obj);
     }
 
     /**
@@ -410,7 +412,7 @@ public class MultipleViewAdapter extends RecyclerView.Adapter {
         }
 
         @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             if (null != onMultipleViewDragListener && onMultipleViewDragListener.canMove(allData, viewHolder.getAdapterPosition(), target.getAdapterPosition())) {
                 Collections.swap(allData, viewHolder.getAdapterPosition(), target.getAdapterPosition());
                 notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
@@ -420,7 +422,7 @@ public class MultipleViewAdapter extends RecyclerView.Adapter {
         }
 
         @Override
-        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             if (null != onMultipleViewDragListener && onMultipleViewDragListener.canRemove(allData, viewHolder.getAdapterPosition())) {
                 allData.remove(viewHolder.getAdapterPosition());
                 notifyItemRemoved(viewHolder.getAdapterPosition());
@@ -444,7 +446,7 @@ public class MultipleViewAdapter extends RecyclerView.Adapter {
         }
 
         @Override
-        public boolean canDropOver(RecyclerView recyclerView, RecyclerView.ViewHolder current, RecyclerView.ViewHolder target) {
+        public boolean canDropOver(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder current, @NonNull RecyclerView.ViewHolder target) {
             if (null != onMultipleViewDragListener) {
                 return onMultipleViewDragListener.canDropOver();
             }
@@ -484,7 +486,8 @@ public class MultipleViewAdapter extends RecyclerView.Adapter {
             if (viewHolder != null) {
                 viewHolder.itemView.setBackgroundColor(0);
             }
-            notifyDataSetChanged();
+            notifyItemChanged(viewHolder.getAdapterPosition());
+//            notifyDataSetChanged();
         }
     }
 }
