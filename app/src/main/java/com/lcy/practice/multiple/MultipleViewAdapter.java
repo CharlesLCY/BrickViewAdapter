@@ -211,7 +211,7 @@ public class MultipleViewAdapter extends RecyclerView.Adapter {
      * @param <T>     Item 泛型约束.
      * @param <R>     管理器泛型约束.
      */
-    public <T, R extends MultipleViewManager> void register(@NonNull Class<T> cls, @NonNull R manager) {
+    public <T, R extends MultipleViewManager<T>> void register(@NonNull Class<T> cls, @NonNull R manager) {
         managers.put(cls.getName(), manager);
 
     }
@@ -225,7 +225,7 @@ public class MultipleViewAdapter extends RecyclerView.Adapter {
      * @param <T>         Item 泛型约束.
      * @param <R>         管理器泛型约束.
      */
-    public <T, R extends MultipleViewManager> void register(@NonNull Class<T> cls, @NonNull R manager, int... layoutCodes) {
+    public <T, R extends MultipleViewManager<T>> void register(@NonNull Class<T> cls, @NonNull R manager, int... layoutCodes) {
         for (int layoutCode : layoutCodes) {
             managers.put(cls.getName() + layoutCode, manager);
         }
