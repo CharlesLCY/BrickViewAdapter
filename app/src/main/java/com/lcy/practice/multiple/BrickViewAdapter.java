@@ -275,7 +275,7 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
         // 如果获取失败, 则判断是否支持多布局模式,如果支持则重新获取多布局模式管理器.
         if (null == manager && obj instanceof BrickViewSupport) {
             // 通过多布局模式重新在管理器映射中获取管理器对象实例.
-            manager = managers.get(obj.getClass().getName() + ((BrickViewSupport) obj).getMultipleLayoutCode());
+            manager = managers.get(obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode());
         }
         // 如果管理器依然为空,则使用未注册管理器,避免发生异常造成闪退.
         if (null == manager) {
@@ -286,13 +286,13 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
                     JsonUtil.jsonBeautify(new Gson().toJson(obj)),
                     obj.getClass().getName(),
                     obj.getClass().getName(),
-                    ((BrickViewSupport) obj).getMultipleLayoutCode()));
+                    ((BrickViewSupport) obj).getLayoutCode()));
             obj = new UnregisteredObject("Not Found Manager",
                     String.format(
                             Locale.getDefault(),
                             "Manager Key :%s\r\n%s",
                             obj.getClass().getName(),
-                            obj.getClass().getName() + ((BrickViewSupport) obj).getMultipleLayoutCode()
+                            obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode()
                     )
             );
         }
@@ -329,8 +329,8 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
         int viewType = managers.indexOfKey(obj.getClass().getName());
 
         if (viewType < 0 && obj instanceof BrickViewSupport) {
-            viewType = managers.indexOfKey(obj.getClass().getName() + ((BrickViewSupport) obj).getMultipleLayoutCode());
-            multipleLayoutCodes.put(viewType, ((BrickViewSupport) obj).getMultipleLayoutCode());
+            viewType = managers.indexOfKey(obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode());
+            multipleLayoutCodes.put(viewType, ((BrickViewSupport) obj).getLayoutCode());
         }
 
         if (viewType < 0) {
@@ -343,9 +343,9 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
         }
 
         if (viewType >= 0 && obj instanceof BrickViewSupport) {
-            managers.put(obj.getClass().getName() + ((BrickViewSupport) obj).getMultipleLayoutCode(), managers.get(obj.getClass().getName()));
-            viewType = managers.indexOfKey(obj.getClass().getName() + ((BrickViewSupport) obj).getMultipleLayoutCode());
-            multipleLayoutCodes.put(viewType, ((BrickViewSupport) obj).getMultipleLayoutCode());
+            managers.put(obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode(), managers.get(obj.getClass().getName()));
+            viewType = managers.indexOfKey(obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode());
+            multipleLayoutCodes.put(viewType, ((BrickViewSupport) obj).getLayoutCode());
         }
         return viewType;
     }

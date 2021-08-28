@@ -11,5 +11,5 @@ interface BrickViewSupport {
      *
      * @return 布局编号, 范围 [0,+ ∞)
      */
-    val multipleLayoutCode: Int
+    val layoutCode: Int
 }

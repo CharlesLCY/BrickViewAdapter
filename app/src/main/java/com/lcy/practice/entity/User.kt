@@ -14,6 +14,6 @@ class User : Serializable, BrickViewSupport {
     var age: Int = 0
     var type: Int = 2
 
-    override val multipleLayoutCode: Int
+    override val layoutCode: Int
         get() = type
 }
