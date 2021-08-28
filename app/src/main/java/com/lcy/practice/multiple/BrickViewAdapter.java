@@ -221,21 +221,6 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
     }
 
     /**
-     * 注册 Item 类及 Item 管理器.
-     *
-     * @param cls         Item 类名.
-     * @param manager     Item 管理器.
-     * @param layoutCodes 可变长入参,传入多个布局 code , 用于实现不同 code 不同布局.
-     * @param <T>         Item 泛型约束.
-     * @param <R>         管理器泛型约束.
-     */
-    public <T, R extends BrickViewManager<T>> void register(@NonNull Class<T> cls, @NonNull R manager, int... layoutCodes) {
-        for (int layoutCode : layoutCodes) {
-            managers.put(cls.getName() + layoutCode, manager);
-        }
-    }
-
-    /**
      * 当 RecyclerView 需要未创建的给定类型时调用.
      *
      * @param parent   表示数据集中给定位置应更新ViewHolder的项目内容。
@@ -328,11 +313,6 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
         Object obj = allData.get(position);
         int viewType = managers.indexOfKey(obj.getClass().getName());
 
-        if (viewType < 0 && obj instanceof BrickViewSupport) {
-            viewType = managers.indexOfKey(obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode());
-            multipleLayoutCodes.put(viewType, ((BrickViewSupport) obj).getLayoutCode());
-        }
-
         if (viewType < 0) {
             for (String key : managers.keySet()) {
                 Logger.i(TAG, String.format("Managers All Key is >>>> %s", key));
@@ -342,7 +322,7 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
             throw new RuntimeException(String.format(TAG + " >>>> ViewManager注册错误！\n未找到<%s>对应的ViewManager", obj.getClass().getName()));
         }
 
-        if (viewType >= 0 && obj instanceof BrickViewSupport) {
+        if (obj instanceof BrickViewSupport) {
             managers.put(obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode(), managers.get(obj.getClass().getName()));
             viewType = managers.indexOfKey(obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode());
             multipleLayoutCodes.put(viewType, ((BrickViewSupport) obj).getLayoutCode());
