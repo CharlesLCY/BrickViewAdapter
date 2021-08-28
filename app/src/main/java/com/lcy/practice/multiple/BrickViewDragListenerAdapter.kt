@@ -3,11 +3,14 @@ package com.lcy.practice.multiple
 import android.view.View
 
 /**
- * <Desc> 列表拖动监听器基础实现类
+ * 列表拖动监听器基础实现类
  * Created by CharlesLee on 2021/8/27
  * 15708478830@163.com
  **/
-open class BrickViewDragListenerAdapter : OnBrickViewDragListener {
+open class BrickViewDragListenerAdapter(
+    override val isItemViewSwipeEnabled: Boolean = false,
+    override val isLongPressDragEnabled: Boolean = false
+) : OnBrickViewDragListener {
     override fun onItemIdle(itemView: View?) {
     }
 
@@ -18,10 +21,6 @@ open class BrickViewDragListenerAdapter : OnBrickViewDragListener {
     }
 
     override fun canDropOver(): Boolean = false
-
-    override fun isItemViewSwipeEnabled(): Boolean = false
-
-    override fun isLongPressDragEnabled(): Boolean = false
 
     override fun canMove(allData: MutableList<Any>?, formPosition: Int, toPosition: Int): Boolean = false
 

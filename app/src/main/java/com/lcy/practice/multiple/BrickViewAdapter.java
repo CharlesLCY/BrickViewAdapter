@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * <Desc> BrickViewAdapter类用于管理BrickViewManager类.
+ * BrickViewAdapter类用于管理BrickViewManager类.
  * Created by Charles Lee on 2021/8/27
  * 15708478830@163.com
  */
