@@ -25,7 +25,7 @@ abstract class BaseBrickViewManager<T> : BrickViewManager<T>() {
         holder: BrickViewHolder,
         position: Int,
         data: T,
-        payloads: MutableList<Any?>?
+        payloads: List<*>?
     ) {
         super.onBindViewHolder(holder, position, data, payloads)
         setupClickView(getClickViewId(), holder, position, data)
