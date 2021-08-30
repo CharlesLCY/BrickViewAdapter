@@ -14,7 +14,7 @@ class UnregisteredBrickViewManager : BrickViewManager<UnregisteredObject>() {
      *
      * @param layoutCode [BrickViewSupport] 接口获取的布局编号,由数据对象实现,可用于实现同数据的不同布局.
      */
-    override fun getLayoutResId(layoutCode: Int) = R.layout.unregistered_multiple_layout
+    override fun getLayoutResId(layoutCode: Int) = R.layout.unregistered_brick_layout
 
     /**
      * 绑定 Item 资源.

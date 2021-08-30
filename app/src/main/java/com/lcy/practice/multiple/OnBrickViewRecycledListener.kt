@@ -9,7 +9,7 @@ interface OnBrickViewRecycledListener {
     /**
      * 当 View 回收回调事件.
      *
-     * @param multipleViewHolder VH.
+     * @param brickViewHolder VH.
      */
-    fun onViewRecycled(multipleViewHolder: BrickViewHolder)
+    fun onViewRecycled(brickViewHolder: BrickViewHolder)
 }

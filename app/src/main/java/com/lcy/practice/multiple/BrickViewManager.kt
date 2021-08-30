@@ -59,12 +59,12 @@ abstract class BrickViewManager<T> {
     }
 
     /**
-     * 创建新的 VH 对象实例,由包内的 MultipleAdapter 适配器调用,用于生成相同且重复的布局.
+     * 创建新的 VH 对象实例,由包内的 BrickAdapter 适配器调用,用于生成相同且重复的布局.
      *
      * @param parent 父视图.
      * @return 返回新的 VH 对象.
      */
-    fun createNewMultipleViewHolder(parent: ViewGroup, layoutCode: Int): BrickViewHolder {
+    fun createNewBrickViewHolder(parent: ViewGroup, layoutCode: Int): BrickViewHolder {
         return if (getLayoutResId(layoutCode) == 0) {
             BrickViewHolder(layoutCode, getHolderView(parent.context))
         } else {

@@ -80,16 +80,17 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
      * Manager 映射.
      */
     private final ArrayMap<String, BrickViewManager> managers;
+    private final ArrayMap<String, BrickViewManager> registerManagers;
 
     /**
      * 布局 LayoutCode 映射.
      */
-    private final SparseArrayCompat<Integer> multipleLayoutCodes;
+    private final SparseArrayCompat<Integer> layoutCodes;
 
     /**
      * 侧滑监听.
      */
-    private OnBrickViewDragListener onMultipleViewDragListener;
+    private OnBrickViewDragListener onBrickViewDragListener;
 
     /**
      * 回收监听.
@@ -101,7 +102,8 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
      */
     public BrickViewAdapter() {
         this.managers = new ArrayMap<>();
-        this.multipleLayoutCodes = new SparseArrayCompat<>();
+        this.registerManagers = new ArrayMap<>();
+        this.layoutCodes = new SparseArrayCompat<>();
     }
 
     /**
@@ -192,9 +194,9 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
         // 绑定默认布局管理器.
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
         // 初始化触摸管理器,用于处理侧滑,拖动排序等.
-        TouchCallback multipleViewTouchCallback = new TouchCallback();
+        TouchCallback brickViewTouchCallback = new TouchCallback();
         // 初始化触摸帮助类.
-        touchHelper = new ItemTouchHelper(multipleViewTouchCallback);
+        touchHelper = new ItemTouchHelper(brickViewTouchCallback);
         // 绑定触摸帮助类,关联 RecyclerView 对象实例,并由帮助类关联至触摸回调处理器.
         touchHelper.attachToRecyclerView(recyclerView);
         // 初始化默认动画执行器.
@@ -216,7 +218,7 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
      * @param <R>     管理器泛型约束.
      */
     public <T, R extends BrickViewManager<T>> void register(@NonNull Class<T> cls, @NonNull R manager) {
-        managers.put(cls.getName(), manager);
+        registerManagers.put(cls.getName(), manager);
 
     }
 
@@ -230,7 +232,7 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
     @NonNull
     @Override
     public BrickViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return managers.get(managers.keyAt(viewType)).createNewMultipleViewHolder(parent, multipleLayoutCodes.get(viewType) == null ? -1 : multipleLayoutCodes.get(viewType));
+        return managers.get(managers.keyAt(viewType)).createNewBrickViewHolder(parent, layoutCodes.get(viewType) == null ? -1 : layoutCodes.get(viewType));
     }
 
     /**
@@ -311,27 +313,31 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
     @Override
     public int getItemViewType(int position) {
         Object obj = allData.get(position);
-        int viewType = managers.indexOfKey(obj.getClass().getName());
+        int viewType = registerManagers.indexOfKey(obj.getClass().getName());
 
         if (viewType < 0) {
-            for (String key : managers.keySet()) {
+            for (String key : registerManagers.keySet()) {
                 Logger.i(TAG, String.format("Managers All Key is >>>> %s", key));
             }
             Logger.w(TAG, String.format("未找到<%s>相关ViewManager是否未注册???", obj.getClass().getName()));
 
-            throw new RuntimeException(String.format(TAG + " >>>> ViewManager注册错误！\n未找到<%s>对应的ViewManager", obj.getClass().getName()));
+            throw new RuntimeException(String.format(TAG + " >>>> ViewManager注册错误！！未找到<%s>对应的ViewManager", obj.getClass().getName()));
         }
 
         if (obj instanceof BrickViewSupport) {
-            managers.put(obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode(), managers.get(obj.getClass().getName()));
+            managers.put(obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode(), registerManagers.get(obj.getClass().getName()));
             viewType = managers.indexOfKey(obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode());
-            multipleLayoutCodes.put(viewType, ((BrickViewSupport) obj).getLayoutCode());
+            layoutCodes.put(viewType, ((BrickViewSupport) obj).getLayoutCode());
+        } else {
+            managers.put(obj.getClass().getName(), registerManagers.get(obj.getClass().getName()));
+            viewType = managers.indexOfKey(obj.getClass().getName());
         }
+
         return viewType;
     }
 
-    public void setOnMultipleViewDragListener(OnBrickViewDragListener onMultipleViewDragListener) {
-        this.onMultipleViewDragListener = onMultipleViewDragListener;
+    public void setOnBrickViewDragListener(OnBrickViewDragListener onBrickViewDragListener) {
+        this.onBrickViewDragListener = onBrickViewDragListener;
     }
 
     /**
@@ -358,20 +364,20 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
     }
 
     /**
-     * 获取 Multiple View 回收监听器.
+     * 获取 Brick View 回收监听器.
      *
-     * @return Multiple View 回收监听器对象实例.
+     * @return Brick View 回收监听器对象实例.
      */
-    public OnBrickViewRecycledListener getOnMultipleViewRecycledListener() {
+    public OnBrickViewRecycledListener getOnBrickViewRecycledListener() {
         return mOnBrickViewRecycledListener;
     }
 
     /**
-     * 设置 Multiple View 回收监听器.
+     * 设置 Brick View 回收监听器.
      *
-     * @param onBrickViewRecycledListener Multiple View 回收监听器对象实例.
+     * @param onBrickViewRecycledListener Brick View 回收监听器对象实例.
      */
-    public void setOnMultipleViewRecycledListener(OnBrickViewRecycledListener onBrickViewRecycledListener) {
+    public void setOnBrickViewRecycledListener(OnBrickViewRecycledListener onBrickViewRecycledListener) {
         this.mOnBrickViewRecycledListener = onBrickViewRecycledListener;
     }
 
@@ -394,7 +400,7 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
 
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            if (null != onMultipleViewDragListener && onMultipleViewDragListener.canMove(allData, viewHolder.getAdapterPosition(), target.getAdapterPosition())) {
+            if (null != onBrickViewDragListener && onBrickViewDragListener.canMove(allData, viewHolder.getAdapterPosition(), target.getAdapterPosition())) {
                 Collections.swap(allData, viewHolder.getAdapterPosition(), target.getAdapterPosition());
                 notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
                 return true;
@@ -404,7 +410,7 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            if (null != onMultipleViewDragListener && onMultipleViewDragListener.canRemove(allData, viewHolder.getAdapterPosition())) {
+            if (null != onBrickViewDragListener && onBrickViewDragListener.canRemove(allData, viewHolder.getAdapterPosition())) {
                 allData.remove(viewHolder.getAdapterPosition());
                 notifyItemRemoved(viewHolder.getAdapterPosition());
             }
@@ -412,24 +418,24 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
 
         @Override
         public boolean isLongPressDragEnabled() {
-            if (null != onMultipleViewDragListener) {
-                return onMultipleViewDragListener.isLongPressDragEnabled();
+            if (null != onBrickViewDragListener) {
+                return onBrickViewDragListener.isLongPressDragEnabled();
             }
             return false;
         }
 
         @Override
         public boolean isItemViewSwipeEnabled() {
-            if (null != onMultipleViewDragListener) {
-                return onMultipleViewDragListener.isItemViewSwipeEnabled();
+            if (null != onBrickViewDragListener) {
+                return onBrickViewDragListener.isItemViewSwipeEnabled();
             }
             return false;
         }
 
         @Override
         public boolean canDropOver(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder current, @NonNull RecyclerView.ViewHolder target) {
-            if (null != onMultipleViewDragListener) {
-                return onMultipleViewDragListener.canDropOver();
+            if (null != onBrickViewDragListener) {
+                return onBrickViewDragListener.canDropOver();
             }
             return false;
         }
@@ -439,20 +445,20 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
             switch (actionState) {
                 // 闲置状态
                 case ItemTouchHelper.ACTION_STATE_IDLE:
-                    if (null != onMultipleViewDragListener) {
-                        onMultipleViewDragListener.onItemIdle(null == viewHolder ? null : viewHolder.itemView);
+                    if (null != onBrickViewDragListener) {
+                        onBrickViewDragListener.onItemIdle(null == viewHolder ? null : viewHolder.itemView);
                     }
                     break;
                 // 滑动状态
                 case ItemTouchHelper.ACTION_STATE_SWIPE:
-                    if (null != onMultipleViewDragListener) {
-                        onMultipleViewDragListener.onItemSwipe(viewHolder.itemView);
+                    if (null != onBrickViewDragListener) {
+                        onBrickViewDragListener.onItemSwipe(viewHolder.itemView);
                     }
                     break;
                 // 拖拽状态
                 case ItemTouchHelper.ACTION_STATE_DRAG:
-                    if (null != onMultipleViewDragListener) {
-                        onMultipleViewDragListener.onItemDrag(viewHolder.itemView);
+                    if (null != onBrickViewDragListener) {
+                        onBrickViewDragListener.onItemDrag(viewHolder.itemView);
                     }
                     break;
                 default:

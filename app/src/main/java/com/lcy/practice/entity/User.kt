@@ -16,4 +16,8 @@ class User : Serializable, BrickViewSupport {
 
     override val layoutCode: Int
         get() = type
+
+    override fun toString(): String {
+        return "User(name='$name', age=$age, type=$type, layoutCode=$layoutCode)"
+    }
 }

@@ -1,10 +1,12 @@
 package com.lcy.practice.manager
 
+import android.util.Log
 import android.widget.TextView
 import com.lcy.practice.R
 import com.lcy.practice.entity.User
 import com.lcy.practice.multiple.BrickViewHolder
 import com.lcy.practice.multiple.BaseBrickViewManager
+import com.orhanobut.logger.Logger
 
 /**
  * Desc:
@@ -26,6 +28,13 @@ class HomeViewManager : BaseBrickViewManager<User>() {
     )
 
     override fun onBindVH(holder: BrickViewHolder, count: Int, position: Int, data: User) {
+        if (position == 0) {
+            Log.i("brick", "start======")
+        }
+        Log.i("brick", "type: $data, layoutCode: ${holder.layoutCode}")
+        if (position == count - 1) {
+            Log.i("brick", "end======")
+        }
         val text: TextView? = holder.getView(R.id.text)
         text?.text = data.name
     }
