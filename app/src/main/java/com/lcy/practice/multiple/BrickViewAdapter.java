@@ -232,7 +232,7 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
     @NonNull
     @Override
     public BrickViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return managers.get(managers.keyAt(viewType)).createNewBrickViewHolder(parent, layoutCodes.get(viewType) == null ? -1 : layoutCodes.get(viewType));
+        return managers.get(managers.keyAt(viewType)).createNewBrickViewHolder(parent, layoutCodes.get(viewType));
     }
 
     /**
@@ -258,11 +258,13 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
         // 获取指定下标的数据
         Object obj = allData.get(position);
         // 尝试通过类名从管理器映射中获取管理器对象
-        BrickViewManager manager = managers.get(obj.getClass().getName());
+        BrickViewManager manager;
         // 如果获取失败, 则判断是否支持多布局模式,如果支持则重新获取多布局模式管理器.
-        if (null == manager && obj instanceof BrickViewSupport) {
+        if (obj instanceof BrickViewSupport) {
             // 通过多布局模式重新在管理器映射中获取管理器对象实例.
             manager = managers.get(obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode());
+        } else {
+            manager = managers.get(obj.getClass().getName());
         }
         // 如果管理器依然为空,则使用未注册管理器,避免发生异常造成闪退.
         if (null == manager) {
@@ -325,14 +327,22 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
         }
 
         if (obj instanceof BrickViewSupport) {
-            managers.put(obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode(), registerManagers.get(obj.getClass().getName()));
+            if (!managers.containsKey(obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode())) {
+                managers.put(obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode(), registerManagers.get(obj.getClass().getName()));
+            }
             viewType = managers.indexOfKey(obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode());
-            layoutCodes.put(viewType, ((BrickViewSupport) obj).getLayoutCode());
+            if (!layoutCodes.containsKey(viewType)) {
+                layoutCodes.put(viewType, ((BrickViewSupport) obj).getLayoutCode());
+            }
         } else {
-            managers.put(obj.getClass().getName(), registerManagers.get(obj.getClass().getName()));
+            if (!managers.containsKey(obj.getClass().getName())) {
+                managers.put(obj.getClass().getName(), registerManagers.get(obj.getClass().getName()));
+            }
             viewType = managers.indexOfKey(obj.getClass().getName());
+            if (!layoutCodes.containsKey(viewType)) {
+                layoutCodes.put(viewType, -1);
+            }
         }
-
         return viewType;
     }
 
