@@ -53,7 +53,7 @@ class HomeFragment : Fragment() {
         adapter.initRecyclerView(binding.rv)
         adapter.setAllData(listData)
         val manager = HomeViewManager()
-        adapter.register(User::class.java, manager)
+        adapter.register(User::class.java, manager, 1, 2, 3, 4)
         adapter.register(New::class.java, NewsViewManager())
 
         manager.setOnItemClickListener { holder, v, data, position ->
@@ -65,7 +65,7 @@ class HomeFragment : Fragment() {
 
         binding.add.setOnClickListener {
             val user = User()
-            user.type = Random().nextInt(10)
+            user.type = Random().nextInt(5)
             user.name = "我真的无语了${user.type}"
             listData.add(user)
             adapter.notifyDataSetChanged()

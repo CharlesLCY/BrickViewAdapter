@@ -1,6 +1,7 @@
 package com.lcy.practice.multiple;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -80,7 +81,6 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
      * Manager 映射.
      */
     private final ArrayMap<String, BrickViewManager> managers;
-    private final ArrayMap<String, BrickViewManager> registerManagers;
 
     /**
      * 布局 LayoutCode 映射.
@@ -102,7 +102,6 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
      */
     public BrickViewAdapter() {
         this.managers = new ArrayMap<>();
-        this.registerManagers = new ArrayMap<>();
         this.layoutCodes = new SparseArrayCompat<>();
     }
 
@@ -218,8 +217,22 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
      * @param <R>     管理器泛型约束.
      */
     public <T, R extends BrickViewManager<T>> void register(@NonNull Class<T> cls, @NonNull R manager) {
-        registerManagers.put(cls.getName(), manager);
+        managers.put(cls.getName(), manager);
+    }
 
+    /**
+     * 注册 Item 类及 Item 管理器.
+     *
+     * @param cls         Item 类名.
+     * @param manager     Item 管理器.
+     * @param layoutCodes 可变长入参,传入多个布局 code , 用于实现不同 code 不同布局.
+     * @param <T>         Item 泛型约束.
+     * @param <R>         管理器泛型约束.
+     */
+    public <T, R extends BrickViewManager<T>> void register(@NonNull Class<T> cls, @NonNull R manager, int... layoutCodes) {
+        for (int layoutCode : layoutCodes) {
+            managers.put(cls.getName() + layoutCode, manager);
+        }
     }
 
     /**
@@ -232,7 +245,8 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
     @NonNull
     @Override
     public BrickViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return managers.get(managers.keyAt(viewType)).createNewBrickViewHolder(parent, layoutCodes.get(viewType));
+        Log.i("brick", "创建了一个ViewHolder，viewType:" + viewType + "，layoutCode: " + layoutCodes.get(viewType));
+        return managers.get(managers.keyAt(viewType)).createNewBrickViewHolder(parent, layoutCodes.get(viewType) == null ? -1 : layoutCodes.get(viewType));
     }
 
     /**
@@ -315,33 +329,18 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
     @Override
     public int getItemViewType(int position) {
         Object obj = allData.get(position);
-        int viewType = registerManagers.indexOfKey(obj.getClass().getName());
-
-        if (viewType < 0) {
-            for (String key : registerManagers.keySet()) {
-                Logger.i(TAG, String.format("Managers All Key is >>>> %s", key));
-            }
-            Logger.w(TAG, String.format("未找到<%s>相关ViewManager是否未注册???", obj.getClass().getName()));
-
-            throw new RuntimeException(String.format(TAG + " >>>> ViewManager注册错误！！未找到<%s>对应的ViewManager", obj.getClass().getName()));
+        int viewType = managers.indexOfKey(obj.getClass().getName());
+        if (viewType < 0 && obj instanceof BrickViewSupport) {
+            viewType = managers.indexOfKey(obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode());
+            layoutCodes.put(viewType, ((BrickViewSupport) obj).getLayoutCode());
         }
 
-        if (obj instanceof BrickViewSupport) {
-            if (!managers.containsKey(obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode())) {
-                managers.put(obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode(), registerManagers.get(obj.getClass().getName()));
+        if (viewType < 0) {
+            for (String key : managers.keySet()) {
+                Logger.i(TAG, String.format("Managers All Key is >>>> %s", key));
             }
-            viewType = managers.indexOfKey(obj.getClass().getName() + ((BrickViewSupport) obj).getLayoutCode());
-            if (!layoutCodes.containsKey(viewType)) {
-                layoutCodes.put(viewType, ((BrickViewSupport) obj).getLayoutCode());
-            }
-        } else {
-            if (!managers.containsKey(obj.getClass().getName())) {
-                managers.put(obj.getClass().getName(), registerManagers.get(obj.getClass().getName()));
-            }
-            viewType = managers.indexOfKey(obj.getClass().getName());
-            if (!layoutCodes.containsKey(viewType)) {
-                layoutCodes.put(viewType, -1);
-            }
+            Logger.w(TAG, String.format("未找到 %s 相关Manager是否未注册 ???", obj.getClass().getName()));
+            throw new RuntimeException(TAG + " >>>> 注册错误");
         }
         return viewType;
     }
