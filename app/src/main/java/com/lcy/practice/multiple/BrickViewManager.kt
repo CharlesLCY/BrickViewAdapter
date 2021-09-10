@@ -17,7 +17,7 @@ import androidx.annotation.LayoutRes
  * Created by CharlesLee on 2021/8/27
  * 15708478830@163.com
 </Desc> */
-abstract class BrickViewManager<T> {
+abstract class BrickViewManager<in T> {
     /**
      * 获取 Layout 资源 ID.
      *

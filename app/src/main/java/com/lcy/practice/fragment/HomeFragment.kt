@@ -53,7 +53,7 @@ class HomeFragment : Fragment() {
         adapter.initRecyclerView(binding.rv)
         adapter.setAllData(listData)
         val manager = HomeViewManager()
-        adapter.register(User::class.java, manager, 1, 2, 3, 4)
+        adapter.register(User::class.java, manager, 0, 1, 2, 3, 4)
         adapter.register(New::class.java, NewsViewManager())
 
         manager.setOnItemClickListener { holder, v, data, position ->
