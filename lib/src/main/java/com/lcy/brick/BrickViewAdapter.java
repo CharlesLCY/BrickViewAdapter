@@ -210,9 +210,9 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
      * @param cls     Item 类名
      * @param manager Item 管理器.
      * @param <T>     Item 泛型约束.
-     * @param <R>     管理器泛型约束.
+     * @param <M>     管理器泛型约束.
      */
-    public <T, R extends BrickViewManager<T>> void register(@NonNull Class<T> cls, @NonNull R manager) {
+    public <T, M extends BrickViewManager<T>> void register(@NonNull Class<T> cls, @NonNull M manager) {
         managers.put(cls.getName(), manager);
     }
 
@@ -223,9 +223,24 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
      * @param manager     Item 管理器.
      * @param layoutCodes 可变长入参,传入多个布局 code , 用于实现不同 code 不同布局.
      * @param <T>         Item 泛型约束.
-     * @param <R>         管理器泛型约束.
+     * @param <M>         管理器泛型约束.
      */
-    public <T, R extends BrickViewManager<T>> void register(@NonNull Class<T> cls, @NonNull R manager, int... layoutCodes) {
+    public <T, M extends BrickViewManager<T>> void register(@NonNull Class<T> cls, @NonNull M manager, int... layoutCodes) {
+        for (int layoutCode : layoutCodes) {
+            managers.put(cls.getName() + layoutCode, manager);
+        }
+    }
+
+    /**
+     * 注册 Item 类及 Item 管理器.
+     *
+     * @param cls         Item 类名.
+     * @param manager     Item 管理器.
+     * @param layoutCodes 多布局layoutCode集合.
+     * @param <T>         Item 泛型约束.
+     * @param <M>         管理器泛型约束.
+     */
+    public <T, M extends BrickViewManager<T>> void register(@NonNull Class<T> cls, @NonNull M manager, List<Integer> layoutCodes) {
         for (int layoutCode : layoutCodes) {
             managers.put(cls.getName() + layoutCode, manager);
         }

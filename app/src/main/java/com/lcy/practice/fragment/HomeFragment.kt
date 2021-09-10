@@ -42,16 +42,16 @@ class HomeFragment : Fragment() {
             user.name = "我真的无语了$i"
             listData.add(user)
 
-//            if (i == 3) {
-//                val news = New()
-//                news.title = "这是一个固定的布局哈哈哈"
-//                listData.add(news)
-//            }
+            if (i == 3) {
+                val news = New()
+                news.title = "这是一个固定的布局哈哈哈"
+                listData.add(news)
+            }
         }
         adapter.initRecyclerView(binding.rv)
         adapter.setAllData(listData)
         val manager = HomeViewManager()
-        adapter.register(User::class.java, manager, 0, 1, 2, 3, 4)
+        adapter.register(User::class.java, manager, mutableListOf(0, 1, 2, 3, 4))
         adapter.register(New::class.java, NewsViewManager())
 
         manager.setOnItemClickListener { holder, v, data, position ->
