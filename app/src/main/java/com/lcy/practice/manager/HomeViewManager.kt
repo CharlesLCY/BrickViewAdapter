@@ -28,13 +28,6 @@ class HomeViewManager : BaseBrickViewManager<User>() {
     )
 
     override fun onBindVH(holder: BrickViewHolder, count: Int, position: Int, data: User) {
-        if (position == 0) {
-            Log.i("brick", "start======")
-        }
-        Log.i("brick", "type: $data, layoutCode: ${holder.layoutCode}")
-        if (position == count - 1) {
-            Log.i("brick", "end======")
-        }
         val text: TextView? = holder.getView(R.id.text)
         text?.text = data.name
     }

@@ -245,7 +245,6 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
     @NonNull
     @Override
     public BrickViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.i("brick", "创建了一个ViewHolder，viewType:" + viewType + "，layoutCode: " + layoutCodes.get(viewType));
         return managers.get(managers.keyAt(viewType)).createNewBrickViewHolder(parent, layoutCodes.get(viewType) == null ? -1 : layoutCodes.get(viewType));
     }
 
@@ -337,10 +336,12 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
 
         if (viewType < 0) {
             for (String key : managers.keySet()) {
-                Logger.i(TAG, String.format("Managers All Key is >>>> %s", key));
+                Log.i(TAG, String.format("Already registered obj >>>> %s", key));
             }
-            Logger.w(TAG, String.format("未找到 %s 相关Manager是否未注册 ???", obj.getClass().getName()));
-            throw new RuntimeException(TAG + " >>>> 注册错误");
+
+            String errorMsg = String.format(TAG + " >>>>>>>>>> register error！！may not register <%s> for BrickViewAdapter", obj.getClass().getName() + ((BrickViewSupport)obj).getLayoutCode());
+            Log.i(TAG, errorMsg);
+            throw new RuntimeException(errorMsg);
         }
         return viewType;
     }
