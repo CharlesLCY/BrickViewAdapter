@@ -1,4 +1,4 @@
-package com.lcy.practice.multiple
+package com.lcy.brick
 
 import android.util.SparseArray
 import android.view.View

@@ -1,4 +1,4 @@
-package com.lcy.practice.multiple
+package com.lcy.brick
 
 /**
  * Brick View 回收监听.

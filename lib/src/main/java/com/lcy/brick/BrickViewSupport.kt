@@ -1,4 +1,4 @@
-package com.lcy.practice.multiple
+package com.lcy.brick
 
 /**
  * 多布局支持接口，要设置多布局的ViewManager对应的实体类需继承该接口

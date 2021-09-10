@@ -1,7 +1,6 @@
-package com.lcy.practice.multiple
+package com.lcy.brick
 
 import android.widget.TextView
-import com.lcy.practice.R
 
 /**
  * 未注册 Item 管理器.

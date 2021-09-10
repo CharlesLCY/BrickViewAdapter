@@ -1,4 +1,4 @@
-package com.lcy.practice.util;
+package com.lcy.brick.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

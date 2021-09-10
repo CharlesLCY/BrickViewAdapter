@@ -1,4 +1,4 @@
-package com.lcy.practice.multiple;
+package com.lcy.brick;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -15,10 +15,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.gson.Gson;
-import com.lcy.practice.util.JsonUtil;
-import com.orhanobut.logger.Logger;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -282,13 +278,6 @@ public class BrickViewAdapter extends RecyclerView.Adapter<BrickViewHolder> {
         // 如果管理器依然为空,则使用未注册管理器,避免发生异常造成闪退.
         if (null == manager) {
             manager = new UnregisteredBrickViewManager();
-            Logger.w(TAG, String.format(
-                    Locale.getDefault(),
-                    "数据:\r\n%s\r\nManager Key :%s\r\n%s%d",
-                    JsonUtil.jsonBeautify(new Gson().toJson(obj)),
-                    obj.getClass().getName(),
-                    obj.getClass().getName(),
-                    ((BrickViewSupport) obj).getLayoutCode()));
             obj = new UnregisteredObject("Not Found Manager",
                     String.format(
                             Locale.getDefault(),

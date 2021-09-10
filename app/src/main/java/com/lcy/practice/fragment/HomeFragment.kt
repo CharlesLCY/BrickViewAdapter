@@ -4,16 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.lcy.brick.BrickViewAdapter
 import com.lcy.practice.R
 import com.lcy.practice.databinding.FragmentHomeBinding
 import com.lcy.practice.entity.New
 import com.lcy.practice.entity.User
 import com.lcy.practice.manager.HomeViewManager
 import com.lcy.practice.manager.NewsViewManager
-import com.lcy.practice.multiple.BrickViewAdapter
 import java.util.*
 
 /**

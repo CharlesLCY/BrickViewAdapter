@@ -1,6 +1,6 @@
 package com.lcy.practice.entity
 
-import com.lcy.practice.multiple.BrickViewSupport
+import com.lcy.brick.BrickViewSupport
 import java.io.Serializable
 
 /**
@@ -9,7 +9,7 @@ import java.io.Serializable
  * create on 2021/8/26 14:29
  * 15708478830@163.com
  **/
-class User : Serializable, BrickViewSupport {
+class User : Serializable, com.lcy.brick.BrickViewSupport {
     var name: String = ""
     var age: Int = 0
     var type: Int = 2

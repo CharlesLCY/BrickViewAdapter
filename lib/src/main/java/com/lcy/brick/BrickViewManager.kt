@@ -1,4 +1,4 @@
-package com.lcy.practice.multiple
+package com.lcy.brick
 
 import android.content.Context
 import android.text.TextUtils
