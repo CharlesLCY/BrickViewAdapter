@@ -8,7 +8,7 @@ import android.view.View;
 import androidx.core.content.ContextCompat;
 
 import com.lcy.practice.R;
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smart.refresh.footer.ClassicsFooter;
 
 /**
  * Desc:自定义footer

@@ -7,15 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.lcy.brick.BrickViewAdapter
 import com.lcy.practice.R
+import com.lcy.practice.adapter.CommRefreshHeader
 import com.lcy.practice.databinding.FragmentHomeBinding
 import com.lcy.practice.entity.New
 import com.lcy.practice.entity.User
 import com.lcy.practice.manager.HomeViewManager
 import com.lcy.practice.manager.NewsViewManager
-import com.scwang.smartrefresh.layout.api.RefreshLayout
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter
-import com.scwang.smartrefresh.layout.header.ClassicsHeader
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import com.scwang.smart.refresh.footer.ClassicsFooter
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 import java.util.*
 
 /**
@@ -64,7 +64,7 @@ class HomeFragment : Fragment() {
         with(binding.refreshLayout) {
             setEnableRefresh(true)
             setEnableLoadMore(true)
-            setRefreshHeader(ClassicsHeader(requireContext()))
+            setRefreshHeader(CommRefreshHeader(requireContext()))
             setRefreshFooter(ClassicsFooter(requireContext()))
             setEnableAutoLoadMore(false)
             setEnableOverScrollBounce(true)
