@@ -13,16 +13,20 @@ import com.lcy.practice.entity.User
  * 15708478830@163.com
  **/
 class HomeViewManager : BaseBrickViewManager<User>() {
-    override fun getLayoutResId(layoutCode: Int) = when(layoutCode % 3) {
+    override fun getLayoutResId(layoutCode: Int) = when (layoutCode % 3) {
         0 -> R.layout.manager_layout_1
         1 -> R.layout.manager_layout_2
         2 -> R.layout.manager_layout_3
         else -> R.layout.manager_layout_1
     }
 
-    override fun getClickViewId(): MutableList<Int> = mutableListOf(
+    override fun getClickViewId() = mutableListOf(
         R.id.image,
         R.id.text
+    )
+
+    override fun getLongClickViewId() = mutableListOf(
+        R.id.image
     )
 
     override fun onBindVH(holder: BrickViewHolder, count: Int, position: Int, data: User) {

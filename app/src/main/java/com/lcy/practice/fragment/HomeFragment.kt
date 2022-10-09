@@ -41,7 +41,6 @@ class HomeFragment : Fragment() {
 
     private fun initView() {
         adapter.initRecyclerView(binding.rv)
-        adapter.setAllData(listData)
         val manager = HomeViewManager()
         adapter.register(User::class.java, manager, mutableListOf(0, 1, 2, 3, 4))
         adapter.register(New::class.java, NewsViewManager())
@@ -50,6 +49,12 @@ class HomeFragment : Fragment() {
             if (v?.id == R.id.text) {
                 listData.removeAt(position)
                 adapter.notifyDataSetChanged()
+            }
+        }
+
+        manager.setOnItemLongClickListener { holder, v, data, position ->
+            if (v?.id == R.id.image) {
+                adapter.startDrag(holder)
             }
         }
 
@@ -66,7 +71,7 @@ class HomeFragment : Fragment() {
             setEnableLoadMore(true)
             setRefreshHeader(CommRefreshHeader(requireContext()))
             setRefreshFooter(ClassicsFooter(requireContext()))
-            setEnableAutoLoadMore(false)
+            setEnableAutoLoadMore(true)
             setEnableOverScrollBounce(true)
             setEnableOverScrollDrag(true)
 
@@ -80,10 +85,13 @@ class HomeFragment : Fragment() {
                 }
             })
         }
+
+        binding.refreshLayout.autoRefresh()
     }
 
     private fun fetchDataRefresh() {
         binding.refreshLayout.postDelayed({
+            listData.clear()
             for (i in 1..10) {
                 val user = User()
                 user.type = Random().nextInt(4)
@@ -99,7 +107,7 @@ class HomeFragment : Fragment() {
 
             adapter.setAllData(listData)
             binding.refreshLayout.finishRefresh(true)
-        }, 2000)
+        }, 1000)
     }
 
     private fun fetchDataLoadMore() {
@@ -114,6 +122,6 @@ class HomeFragment : Fragment() {
 
             adapter.notifyItemInserted(start + 1 )
             binding.refreshLayout.finishLoadMore(true)
-        }, 2000)
+        }, 1000)
     }
 }

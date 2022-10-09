@@ -28,7 +28,7 @@ interface OnBrickViewDragListener {
      * @param toPosition   交换目标位置
      * @return 返回true 则会交换位置,否则不予交换,任何情况都交换就直接返回true
      */
-    fun canMove(allData: MutableList<Any>?, formPosition: Int, toPosition: Int): Boolean
+    fun canMove(allData: MutableList<Any>, formPosition: Int, toPosition: Int): Boolean
 
     /**
      * 用于判断侧滑的条目 是否删除
@@ -37,5 +37,5 @@ interface OnBrickViewDragListener {
      * @param removePosition 将要被删除的Item
      * @return 返回true 将会删除,否则不予删除
      */
-    fun canRemove(allData: MutableList<Any>?, removePosition: Int): Boolean
+    fun canRemove(allData: MutableList<Any>, removePosition: Int): Boolean
 }

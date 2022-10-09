@@ -22,7 +22,7 @@ open class BrickViewDragListenerAdapter(
 
     override fun canDropOver(): Boolean = false
 
-    override fun canMove(allData: MutableList<Any>?, formPosition: Int, toPosition: Int): Boolean = false
+    override fun canMove(allData: MutableList<Any>, formPosition: Int, toPosition: Int): Boolean = false
 
-    override fun canRemove(allData: MutableList<Any>?, removePosition: Int): Boolean = false
+    override fun canRemove(allData: MutableList<Any>, removePosition: Int): Boolean = false
 }
