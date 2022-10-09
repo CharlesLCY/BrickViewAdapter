@@ -65,10 +65,10 @@ class CommRefreshHeader : SimpleComponent, RefreshHeader {
                 binding.commonRefreshHeaderText.text = "松开加载"
             }
             RefreshState.ReleaseToTwoLevel -> {
-
             }
             RefreshState.Loading -> {
             }
+            else -> {}
         }
     }
 
