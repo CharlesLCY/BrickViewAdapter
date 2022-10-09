@@ -45,7 +45,8 @@ abstract class BaseFragmentAdapter(private val fragmentManager: FragmentManager)
 
     fun getItemId(position: Int): Long = position.toLong()
 
-    override fun finishUpdate(container: View) {
+    override fun finishUpdate(container: ViewGroup) {
+        super.finishUpdate(container)
         if (transaction != null) {
             transaction!!.commitNowAllowingStateLoss()
             transaction = null

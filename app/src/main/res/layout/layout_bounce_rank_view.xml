@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/tv_one"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:text="1st"
+        android:textColor="#666666"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_two"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="2nd"
+        android:textColor="#666666"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_one"
+        app:layout_constraintTop_toBottomOf="@+id/tv_one" />
+
+    <TextView
+        android:id="@+id/tv_three"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="3rd"
+        android:textColor="#666666"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_one"
+        app:layout_constraintTop_toBottomOf="@+id/tv_two" />
+
+    <TextView
+        android:id="@+id/tv_rank_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="第一名"
+        android:textColor="#333333"
+        android:textSize="17sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_one"
+        app:layout_constraintStart_toEndOf="@+id/tv_one" />
+
+    <TextView
+        android:id="@+id/tv_rank_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="第二名"
+        android:textColor="#333333"
+        android:textSize="17sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_two"
+        app:layout_constraintStart_toEndOf="@+id/tv_two" />
+
+    <TextView
+        android:id="@+id/tv_rank_three"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="第三名"
+        android:textColor="#333333"
+        android:textSize="17sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_three"
+        app:layout_constraintStart_toEndOf="@+id/tv_three" />
+
+    <TextView
+        android:id="@+id/tv_rank_four"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="第四名"
+        android:textColor="#333333"
+        android:textSize="17sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_three"
+        app:layout_constraintStart_toEndOf="@+id/tv_three" />
+
+    <TextView
+        android:id="@+id/tv_rank_five"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="第五名"
+        android:textColor="#333333"
+        android:textSize="17sp"
+        android:visibility="gone"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_three"
+        app:layout_constraintStart_toEndOf="@+id/tv_three" />
+
+    <TextView
+        android:id="@+id/tv_rank_six"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="第六名"
+        android:textColor="#333333"
+        android:textSize="17sp"
+        android:visibility="gone"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_three"
+        app:layout_constraintStart_toEndOf="@+id/tv_three" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
