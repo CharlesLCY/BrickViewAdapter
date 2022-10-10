@@ -50,6 +50,12 @@ class HomeFragment : Fragment() {
                 listData.removeAt(position)
                 adapter.notifyDataSetChanged()
             }
+
+            if (v?.id == R.id.image) {
+                val user = data as User
+                user.name = "我的名字变了"
+                adapter.notifyDataSetChanged()
+            }
         }
 
         manager.setOnItemLongClickListener { holder, v, data, position ->

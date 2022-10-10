@@ -335,7 +335,7 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
             }
             val errorMsg = String.format(
                 "$TAG >>>>>>>>>> register error！！may not register <%s> for BrickViewAdapter",
-                obj.javaClass.name + (obj as BrickViewSupport?)!!.layoutCode
+                obj.javaClass.name
             )
             Log.i(TAG, errorMsg)
             throw RuntimeException(errorMsg)
