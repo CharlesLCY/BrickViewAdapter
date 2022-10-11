@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.lcy.brick.list.register
 import com.lcy.practice.R
+import com.lcy.practice.databinding.EmptyLayoutBinding
 import com.lcy.practice.databinding.FragmentHome1Binding
-import com.lcy.practice.entity.New
-import com.lcy.practice.entity.User
-import com.lcy.practice.manager.HomeViewManager
-import com.lcy.practice.manager.NewsViewManager
-import java.util.*
+import com.lcy.practice.manager.ArticleManager
+import com.lcy.practice.net.Api
+import com.lcy.practice.net.HttpClient
+import com.lcy.practice.net.entity.Article
+import kotlinx.coroutines.*
 
 /**
  * Desc:
@@ -22,7 +23,7 @@ import java.util.*
  **/
 class HomeFragment1 : Fragment() {
     private lateinit var binding: FragmentHome1Binding
-    private var page = 1
+    private var page = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,77 +36,93 @@ class HomeFragment1 : Fragment() {
     }
 
     private fun initView() {
-        val manager = HomeViewManager()
-        binding.rv.register(User::class.java, manager, mutableListOf(0, 1, 2, 3, 4))
-        binding.rv.register(New::class.java, NewsViewManager())
+        binding.rv.apply {
+            val manager = ArticleManager()
+            register(Article::class.java, manager)
 
-        manager.setOnItemClickListener { _, v, data, position ->
-            if (v?.id == R.id.image) {
-                val user = data as User
-                user.name = "我的名字变了"
-                binding.rv.adapter.notifyItemChanged(position)
+            // 设置刷新监听
+            setOnRefreshListener {
+                if (it) {
+                    page = 0
+                    fetchDataRefresh()
+                } else {
+                    page++
+                    fetchDataLoadMore()
+                }
             }
+
+            manager.setOnItemClickListener { _, v, _, _ ->
+                if (v?.id == R.id.image) {
+//                val user = data as User
+//                user.name = "我的名字变了"
+//                binding.rv.adapter.notifyItemChanged(position)
+                }
+            }
+
+            manager.setOnItemLongClickListener { holder, v, _, _ ->
+                if (v?.id == R.id.title) {
+                    binding.rv.startDrag(holder)
+                }
+            }
+
+            // 自动刷新
+            autoRefresh()
+
         }
 
-        manager.setOnItemLongClickListener { holder, v, _, _ ->
-            if (v?.id == R.id.image) {
-                binding.rv.adapter.startDrag(holder)
-            }
+        setEmptyLayout()
+    }
+
+    private fun setEmptyLayout() {
+        val emptyBinding = EmptyLayoutBinding.inflate(layoutInflater, null, false)
+        binding.rv.setEmptyLayout(emptyBinding.root)
+    }
+
+    private fun getErrorLayoutView(): View {
+        val emptyBinding = EmptyLayoutBinding.inflate(layoutInflater, null, false)
+        emptyBinding.tvText.text = "加载失败，点击重试"
+        emptyBinding.tvText.setOnClickListener {
+            binding.rv.autoRefresh()
         }
 
-        binding.rv.setOnRefreshListener {
-            if (it) {
-                page = 1
-                fetchDataRefresh()
-            } else {
-                page++
-                fetchDataLoadMore()
-            }
-        }
-
-        binding.rv.autoRefresh()
+        return emptyBinding.root
     }
 
     private fun fetchDataRefresh() {
-        binding.rv.postDelayed({
-            val list = mutableListOf<Any>()
-            for (i in 1..15) {
-                val user = User()
-                user.type = Random().nextInt(4)
-                user.name = "我真的无语了${user.type}"
-                list.add(user)
-
-                if (i == 3) {
-                    val news = New()
-                    news.title = "这是一个固定的布局哈哈哈"
-                    list.add(news)
-                }
+        CoroutineScope(Dispatchers.Main).launch(
+            CoroutineExceptionHandler { coroutineContext, throwable ->
+                binding.rv.showErrorLayout(getErrorLayoutView())
+                binding.rv.finishRefresh(false)
             }
-
-            binding.rv.fetchDataSuccess(true, list)
-        }, 1000)
+        ) {
+            val api = HttpClient.buildApi(Api::class.java)
+            val response = api.getHomeList(page, 15)
+            val list = mutableListOf<Any>()
+            list.addAll(response.data?.datas!!)
+            if (response.errorCode == 0) {
+                binding.rv.fetchDataSuccess(true, list)
+            } else {
+                binding.rv.fetchDataFailure(true)
+                throw CancellationException()
+            }
+        }
     }
 
     private fun fetchDataLoadMore() {
-        binding.rv.postDelayed({
-            val list = mutableListOf<Any>()
-            if (page == 2) {
-                for (i in 1..10) {
-                    val user = User()
-                    user.type = Random().nextInt(4)
-                    user.name = "我真的无语了${user.type}"
-                    list.add(user)
-                }
-            } else {
-                for (i in 1..15) {
-                    val user = User()
-                    user.type = Random().nextInt(4)
-                    user.name = "我真的无语了${user.type}"
-                    list.add(user)
-                }
+        CoroutineScope(Dispatchers.Main).launch(
+            CoroutineExceptionHandler { coroutineContext, throwable ->
+                binding.rv.finishLoadMore(false)
             }
-
-            binding.rv.fetchDataSuccess(false, list)
-        }, 1000)
+        ) {
+            val api = HttpClient.buildApi(Api::class.java)
+            val response = api.getHomeList(page, 15)
+            val list = mutableListOf<Any>()
+            list.addAll(response.data?.datas!!)
+            if (response.errorCode == 0) {
+                binding.rv.fetchDataSuccess(false, list)
+            } else {
+                binding.rv.fetchDataFailure(false)
+            }
+        }
     }
 }

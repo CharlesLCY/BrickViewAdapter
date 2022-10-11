@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
             val adapter = MyFragmentPagerAdapter(supportFragmentManager)
             viewPager.adapter = adapter
             tabLayout.setupWithViewPager(binding.viewPager)
+            binding.viewPager.offscreenPageLimit = 3
             tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     setTabViewInfo(tab?.customView, tabLayout.selectedTabPosition, true)

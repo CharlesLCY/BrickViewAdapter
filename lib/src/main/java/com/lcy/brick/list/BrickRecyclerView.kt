@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import androidx.annotation.*
 import androidx.recyclerview.widget.*
 import com.lcy.brick.BrickViewAdapter
+import com.lcy.brick.BrickViewHolder
 import com.lcy.brick.databinding.LayoutBrickRecyclerViewBinding
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.MaterialHeader
@@ -27,7 +28,6 @@ class BrickRecyclerView : FrameLayout {
         LayoutBrickRecyclerViewBinding.inflate(LayoutInflater.from(context), this, true)
 
     private var emptyLayout : View ?= null
-    private var errorLayout : View ?= null
 
     /**
      * 列表Adapter
@@ -153,6 +153,7 @@ class BrickRecyclerView : FrameLayout {
                 if (dataList.size < pageSize) {
                     binding.smartRefreshLayout.finishRefreshWithNoMoreData()
                 } else {
+                    binding.smartRefreshLayout.setNoMoreData(false)
                     binding.smartRefreshLayout.finishRefresh(true)
                 }
             }
@@ -240,7 +241,9 @@ class BrickRecyclerView : FrameLayout {
     /**
      * 显示空页面
      */
-    fun showEmptyLayout() {
+    fun showEmptyLayout(emptyLayout: View? = this.emptyLayout) {
+        if (emptyLayout == null) return
+
         binding.emptyLayout.removeAllViews()
         binding.emptyLayout.addView(emptyLayout)
         binding.emptyLayout.visibility = View.VISIBLE
@@ -248,16 +251,11 @@ class BrickRecyclerView : FrameLayout {
     }
 
     /**
-     * 自定义错误页面
+     * 显示自定义错误页面
      */
-    fun setErrorLayout(errorLayout: View) {
-        this.errorLayout = errorLayout
-    }
+    fun showErrorLayout(errorLayout: View?) {
+        if (errorLayout == null) return
 
-    /**
-     * 显示错误页面
-     */
-    fun showErrorLayout() {
         binding.emptyLayout.removeAllViews()
         binding.emptyLayout.addView(errorLayout)
         binding.emptyLayout.visibility = View.VISIBLE
@@ -280,10 +278,50 @@ class BrickRecyclerView : FrameLayout {
     }
 
     /**
+     * 滑动到头部
+     */
+    fun scrollToTop() {
+        adapter.scrollListToTop()
+    }
+
+    /**
+     * 滑动到尾部
+     */
+    fun scrollToBottom() {
+        adapter.scrollListToBottom()
+    }
+
+    /**
+     * 获取指定下标的 Holder 对象实例.
+     *
+     * @param position 下标.
+     * @return Holder.
+     */
+    fun getPositionHolder(position: Int): BrickViewHolder? {
+        return adapter.getPositionHolder(position)
+    }
+
+    /**
+     * 获取指定 position 下标 Holder 中的指定 View.
+     *
+     * @param position 指定获取 Holder 的下标.
+     * @param id       指定 ID.
+     * @return 指定 position 下标 Holder 中的指定 View.
+     */
+    fun getViewFromPositionHolder(position: Int, @IdRes id: Int): View? {
+        return adapter.getViewFromPositionHolder(position, id)
+    }
+
+    /**
      * 拖动排序时，固定某个Item不能拖动
      * 需在setAdapter前设置才生效
      * @param fixedPosition 固定的行的索引
      */
+    @Deprecated("use startDrag()")
     fun setDragFixPosition(fixedPosition: Int) {
+    }
+
+    fun startDrag(viewHolder: RecyclerView.ViewHolder?) {
+        adapter.startDrag(viewHolder)
     }
 }
