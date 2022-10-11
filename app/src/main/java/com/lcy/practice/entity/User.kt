@@ -9,7 +9,7 @@ import java.io.Serializable
  * create on 2021/8/26 14:29
  * 15708478830@163.com
  **/
-class User : Serializable, com.lcy.brick.BrickViewSupport {
+class User : Serializable, BrickViewSupport {
     var name: String = ""
     var age: Int = 0
     var type: Int = 2

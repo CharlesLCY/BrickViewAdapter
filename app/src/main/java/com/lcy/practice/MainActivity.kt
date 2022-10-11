@@ -11,7 +11,7 @@ import com.lcy.practice.adapter.BaseFragmentAdapter
 import com.lcy.practice.databinding.ActivityMainBinding
 import com.lcy.practice.databinding.HomeBottomTabLayoutBinding
 import com.lcy.practice.fragment.DiscoverFragment
-import com.lcy.practice.fragment.HomeFragment
+import com.lcy.practice.fragment.HomeFragment1
 import com.lcy.practice.fragment.MineFragment
 
 class MainActivity : AppCompatActivity() {
@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private val titleList = mutableListOf("首页", "发现", "我的")
     private val fragmentList = mutableListOf(
-        HomeFragment(),
+        HomeFragment1(),
         DiscoverFragment(),
         MineFragment()
     )

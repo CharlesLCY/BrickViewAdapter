@@ -105,6 +105,13 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun addData(listData: MutableList<Any>) {
+        allData.addAll(listData)
+        // 刷新数据
+        notifyDataSetChanged()
+    }
+
     /**
      * 局部更新
      */
@@ -156,6 +163,17 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
         // 判断滚动是否有意义: 非空 && 数据大于1
         if (null != recyclerViewPointer && itemCount > 1) {
             recyclerViewPointer?.scrollToPosition(itemCount - 1)
+        }
+    }
+
+    /**
+     * 滚动列表到指定位置.
+     * 封装了通用的计算,避免调用时计算和判断.
+     */
+    fun scrollListToPosition(position: Int) {
+        // 判断滚动是否有意义: 非空 && 数据大于1
+        if (null != recyclerViewPointer && itemCount > 1) {
+            recyclerViewPointer?.scrollToPosition(position)
         }
     }
 
