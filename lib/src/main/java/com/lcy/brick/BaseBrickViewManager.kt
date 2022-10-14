@@ -67,12 +67,12 @@ abstract class BaseBrickViewManager<T> : BrickViewManager<T>() {
     }
 
     /**
-     * 获取点击的View id集合
+     * 设置需要点击事件的View id集合
      */
     open fun getClickViewId(): MutableList<Int> = mutableListOf()
 
     /**
-     * 获取长按的View id集合
+     * 设置需要长按事件的View id集合
      */
     open fun getLongClickViewId(): MutableList<Int> = mutableListOf()
 

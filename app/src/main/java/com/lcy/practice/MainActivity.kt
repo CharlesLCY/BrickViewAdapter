@@ -11,6 +11,7 @@ import com.lcy.practice.adapter.BaseFragmentAdapter
 import com.lcy.practice.databinding.ActivityMainBinding
 import com.lcy.practice.databinding.HomeBottomTabLayoutBinding
 import com.lcy.practice.fragment.DiscoverFragment
+import com.lcy.practice.fragment.HomeFragment
 import com.lcy.practice.fragment.HomeFragment1
 import com.lcy.practice.fragment.MineFragment
 

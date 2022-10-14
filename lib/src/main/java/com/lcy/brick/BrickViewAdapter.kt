@@ -69,24 +69,29 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
     /**
      * 侧滑监听.
      */
-    private var onBrickViewDragListener: OnBrickViewDragListener? = object: BrickViewDragListenerAdapter() {
-        override fun canDropOver(): Boolean {
-            return true
-        }
+    private var onBrickViewDragListener: OnBrickViewDragListener? =
+        object : BrickViewDragListenerAdapter() {
+            override fun canDropOver(): Boolean {
+                return true
+            }
 
-        override fun canMove(
-            allData: MutableList<Any>,
-            formPosition: Int,
-            toPosition: Int
-        ): Boolean {
-            return true
+            override fun canMove(
+                allData: MutableList<Any>,
+                formPosition: Int,
+                toPosition: Int
+            ): Boolean {
+                return true
+            }
         }
-    }
 
     /**
      * 回收监听.
      */
     private var onBrickViewRecycledListener: OnBrickViewRecycledListener? = null
+
+    init {
+        managers[UnregisteredObject::class.java.name] = UnregisteredBrickViewManager() as BrickViewManager<Any>
+    }
 
     /**
      * 设置数据源.
@@ -262,11 +267,15 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
      * @return 指定视图类型的 VH 对象实例.
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BrickViewHolder {
-        return managers[managers.keyAt(viewType)]!!
-            .createNewBrickViewHolder(
-                parent,
-                (if (layoutCodes[viewType] == null) -1 else layoutCodes[viewType])!!
-            )
+        return if (viewType < 0) {
+            managers[UnregisteredObject::class.java.name]?.createNewBrickViewHolder(parent, -1)!!
+        } else {
+            managers[managers.keyAt(viewType)]!!
+                .createNewBrickViewHolder(
+                    parent,
+                    (if (layoutCodes[viewType] == null) -1 else layoutCodes[viewType])!!
+                )
+        }
     }
 
     /**
@@ -306,11 +315,11 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
         if (null == manager) {
             manager = UnregisteredBrickViewManager() as BrickViewManager<Any>
             obj = UnregisteredObject(
-                "Not Found Manager", String.format(
+                "Not Found ViewManager", String.format(
                     Locale.getDefault(),
-                    "Manager Key :%s\r\n%s",
+                    "Manager Entity: %s\r\nLayoutCode: %s",
                     obj.javaClass.name,
-                    obj.javaClass.name + (obj as BrickViewSupport?)!!.layoutCode
+                    if (obj is BrickViewSupport) obj.layoutCode else -1
                 )
             )
         }
@@ -352,11 +361,11 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
                 Log.i(TAG, String.format("Already registered obj >>>> %s", key))
             }
             val errorMsg = String.format(
-                "$TAG >>>>>>>>>> register error！！may not register <%s> for BrickViewAdapter",
+                "$TAG >>>>>>>>>> may not register <%s>",
                 obj.javaClass.name
             )
-            Log.i(TAG, errorMsg)
-            throw RuntimeException(errorMsg)
+            Log.e(TAG, errorMsg)
+//            throw RuntimeException(errorMsg)
         }
         return viewType
     }

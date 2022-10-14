@@ -37,7 +37,7 @@ data class Article(
     val superChapterId: Int,
     val superChapterName: String,
     val tags: List<Any>,
-    val title: String,
+    var title: String,
     val type: Int,
     val userId: Int,
     val visible: Int,

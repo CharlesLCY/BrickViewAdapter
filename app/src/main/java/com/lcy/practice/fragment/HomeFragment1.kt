@@ -1,14 +1,21 @@
 package com.lcy.practice.fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import com.lcy.brick.BrickViewDragListenerAdapter
+import com.lcy.brick.OnBrickViewDragListener
 import com.lcy.brick.list.register
 import com.lcy.practice.R
 import com.lcy.practice.databinding.EmptyLayoutBinding
 import com.lcy.practice.databinding.FragmentHome1Binding
+import com.lcy.practice.entity.User
 import com.lcy.practice.manager.ArticleManager
 import com.lcy.practice.net.Api
 import com.lcy.practice.net.HttpClient
@@ -38,7 +45,7 @@ class HomeFragment1 : Fragment() {
     private fun initView() {
         binding.rv.apply {
             val manager = ArticleManager()
-            register(Article::class.java, manager)
+//            register(Article::class.java, manager)
 
             // 设置刷新监听
             setOnRefreshListener {
@@ -51,11 +58,11 @@ class HomeFragment1 : Fragment() {
                 }
             }
 
-            manager.setOnItemClickListener { _, v, _, _ ->
-                if (v?.id == R.id.image) {
-//                val user = data as User
-//                user.name = "我的名字变了"
-//                binding.rv.adapter.notifyItemChanged(position)
+            manager.setOnItemClickListener { _, v, data, position ->
+                if (v?.id == R.id.title) {
+                    val article = data as Article
+                    article.title = "我的名字变了"
+                    binding.rv.adapter.notifyItemChanged(position)
                 }
             }
 
@@ -64,6 +71,26 @@ class HomeFragment1 : Fragment() {
                     binding.rv.startDrag(holder)
                 }
             }
+
+//            setLayoutManager(GridLayoutManager(requireContext(), 2))
+
+            setOnDragListener(object: BrickViewDragListenerAdapter() {
+                override fun onItemIdle(itemView: View?) {
+                    itemView?.setBackgroundColor(Color.parseColor("#FFFFFF"))
+                }
+
+                override fun onItemDrag(itemView: View?) {
+                    itemView?.setBackgroundColor(Color.parseColor("#F1F1F1"))
+                }
+
+                override fun canDropOver() = true
+
+                override fun canMove(
+                    allData: MutableList<Any>,
+                    formPosition: Int,
+                    toPosition: Int
+                ) = true
+            })
 
             // 自动刷新
             autoRefresh()

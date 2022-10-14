@@ -10,6 +10,7 @@ import androidx.annotation.*
 import androidx.recyclerview.widget.*
 import com.lcy.brick.BrickViewAdapter
 import com.lcy.brick.BrickViewHolder
+import com.lcy.brick.OnBrickViewDragListener
 import com.lcy.brick.databinding.LayoutBrickRecyclerViewBinding
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.MaterialHeader
@@ -182,6 +183,20 @@ class BrickRecyclerView : FrameLayout {
         } else {
             finishLoadMore(false)
         }
+    }
+
+    /**
+     * 设置layoutManager
+     */
+    fun setLayoutManager(layoutManager: RecyclerView.LayoutManager) {
+        binding.recyclerView.layoutManager = layoutManager
+    }
+
+    /**
+     * 自定义DragListener
+     */
+    fun setOnDragListener(onDragListener: OnBrickViewDragListener?) {
+        adapter.setOnBrickViewDragListener(onDragListener)
     }
 
     /**

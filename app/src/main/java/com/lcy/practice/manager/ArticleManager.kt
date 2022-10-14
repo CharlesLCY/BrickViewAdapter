@@ -15,6 +15,10 @@ import com.lcy.practice.net.entity.Article
 class ArticleManager : BaseBrickViewManager<Article>() {
     override fun getLayoutResId(layoutCode: Int) = R.layout.manager_article_layout
 
+    override fun getClickViewId(): MutableList<Int> = mutableListOf(
+        R.id.title
+    )
+
     override fun getLongClickViewId(): MutableList<Int> = mutableListOf(
         R.id.title
     )
