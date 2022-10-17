@@ -45,7 +45,7 @@ class HomeFragment1 : Fragment() {
     private fun initView() {
         binding.rv.apply {
             val manager = ArticleManager()
-//            register(Article::class.java, manager)
+            register(Article::class.java, manager)
 
             // 设置刷新监听
             setOnRefreshListener {
@@ -123,7 +123,7 @@ class HomeFragment1 : Fragment() {
             }
         ) {
             val api = HttpClient.buildApi(Api::class.java)
-            val response = api.getHomeList(page, 15)
+            val response = api.getHomeList(page)
             val list = mutableListOf<Any>()
             list.addAll(response.data?.datas!!)
             if (response.errorCode == 0) {
@@ -142,7 +142,7 @@ class HomeFragment1 : Fragment() {
             }
         ) {
             val api = HttpClient.buildApi(Api::class.java)
-            val response = api.getHomeList(page, 15)
+            val response = api.getHomeList(page)
             val list = mutableListOf<Any>()
             list.addAll(response.data?.datas!!)
             if (response.errorCode == 0) {

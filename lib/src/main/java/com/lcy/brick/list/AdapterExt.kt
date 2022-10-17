@@ -11,7 +11,3 @@ import com.lcy.brick.BrickViewManager
 fun <T, M : BrickViewManager<T>?> BrickRecyclerView.register(cls: Class<T>, manager: M) {
     adapter.register(cls, manager)
 }
-
-fun <T, M : BrickViewManager<T>?> BrickRecyclerView.register(cls: Class<T>, manager: M, layoutCodes: List<Int>) {
-    adapter.register(cls, manager, layoutCodes)
-}

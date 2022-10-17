@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
     private fun initView() {
         adapter.initRecyclerView(binding.rv)
         val manager = HomeViewManager()
-        adapter.register(User::class.java, manager,0, 1, 2, 3)
+        adapter.register(User::class.java, manager)
         adapter.register(New::class.java, NewsViewManager())
 
         manager.setOnItemClickListener { holder, v, data, position ->

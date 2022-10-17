@@ -14,5 +14,5 @@ import retrofit2.http.Query
  */
 interface Api {
     @GET("article/list/{page}/json")
-    suspend fun getHomeList(@Path("page") page: Int, @Query("page_size") pageSize: Int): HttpResponse<PageEntity<Article>>
+    suspend fun getHomeList(@Path("page") page: Int): HttpResponse<PageEntity<Article>>
 }

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.*
 import java.util.*
 
 /**
- * BrickViewAdapter类用于管理BrickViewManager类.（目前是java，转换成Kotlin后onBindViewHolder()参数存在报错问题）
+ * BrickViewAdapter类用于管理BrickViewManager类
  * Created by Charles Lee on 2021/8/27
  * 15708478830@163.com
  */
@@ -223,40 +223,49 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
         managers[cls.name] = manager as BrickViewManager<Any>
     }
 
-    /**
-     * 注册 Item 类及 Item 管理器.
-     *
-     * @param cls         Item 类名.
-     * @param manager     Item 管理器.
-     * @param layoutCodes 可变长入参,传入多个布局 code , 用于实现不同 code 不同布局.
-     * @param <T>         Item 泛型约束.
-     * @param <M>         管理器泛型约束.
-    </M></T> */
-    fun <T, M : BrickViewManager<T>?> register(cls: Class<T>, manager: M, vararg layoutCodes: Int) {
-        for (layoutCode in layoutCodes) {
-            managers[cls.name + layoutCode] = manager as BrickViewManager<Any>
-        }
-    }
-
-    /**
-     * 注册 Item 类及 Item 管理器.
-     *
-     * @param cls         Item 类名.
-     * @param manager     Item 管理器.
-     * @param layoutCodes 多布局layoutCode集合.
-     * @param <T>         Item 泛型约束.
-     * @param <M>         管理器泛型约束.
-    </M></T> */
-    fun <T, M : BrickViewManager<T>?> register(cls: Class<T>, manager: M, layoutCodes: List<Int>) {
-        for (layoutCode in layoutCodes) {
-            managers[cls.name + layoutCode] = manager as BrickViewManager<Any>
-        }
-    }
-
     fun startDrag(viewHolder: RecyclerView.ViewHolder?) {
         if (touchHelper != null) {
             touchHelper?.startDrag(viewHolder!!)
         }
+    }
+
+    /**
+     * 返回适配器所拥有的数据集中的项目总数。
+     *
+     * @return 数据集总数.
+     */
+    override fun getItemCount(): Int {
+        return allData.size
+    }
+
+    /**
+     * 当 RecyclerView 需要未创建的给定类型时,为确定 View Type 类型而调用.
+     *
+     * @param position 指定位置下标.
+     * @return View Type 分类数值,每个数值代表一个类型.
+     */
+    override fun getItemViewType(position: Int): Int {
+        val obj = allData[position]
+        var viewType = managers.indexOfKey(obj.javaClass.name)
+        if (viewType > 0 && obj is BrickViewSupport) {
+            if (!managers.contains(obj.javaClass.name + obj.layoutCode)) {
+                managers[obj.javaClass.name + obj.layoutCode] = managers[managers.keyAt(viewType)]
+            }
+            viewType = managers.indexOfKey(obj.javaClass.name + obj.layoutCode)
+            layoutCodes.put(viewType, obj.layoutCode)
+        }
+        if (viewType < 0) {
+            for (key in managers.keys) {
+                Log.i(TAG, String.format("Already registered obj >>>> %s", key))
+            }
+            val errorMsg = String.format(
+                "$TAG >>>>>>>>>> may not register <%s>",
+                obj.javaClass.name
+            )
+            Log.e(TAG, errorMsg)
+//            throw RuntimeException(errorMsg)
+        }
+        return viewType
     }
 
     /**
@@ -332,42 +341,6 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
 
         // 通过管理器,绑定 VH 事件处理.
         manager.onBindViewEvent(holder, position, obj)
-    }
-
-    /**
-     * 返回适配器所拥有的数据集中的项目总数。
-     *
-     * @return 数据集总数.
-     */
-    override fun getItemCount(): Int {
-        return allData.size
-    }
-
-    /**
-     * 当 RecyclerView 需要未创建的给定类型时,为确定 View Type 类型而调用.
-     *
-     * @param position 指定位置下标.
-     * @return View Type 分类数值,每个数值代表一个类型.
-     */
-    override fun getItemViewType(position: Int): Int {
-        val obj = allData[position]
-        var viewType = managers.indexOfKey(obj.javaClass.name)
-        if (viewType < 0 && obj is BrickViewSupport) {
-            viewType = managers.indexOfKey(obj.javaClass.name + obj.layoutCode)
-            layoutCodes.put(viewType, obj.layoutCode)
-        }
-        if (viewType < 0) {
-            for (key in managers.keys) {
-                Log.i(TAG, String.format("Already registered obj >>>> %s", key))
-            }
-            val errorMsg = String.format(
-                "$TAG >>>>>>>>>> may not register <%s>",
-                obj.javaClass.name
-            )
-            Log.e(TAG, errorMsg)
-//            throw RuntimeException(errorMsg)
-        }
-        return viewType
     }
 
     fun setOnBrickViewDragListener(onBrickViewDragListener: OnBrickViewDragListener?) {

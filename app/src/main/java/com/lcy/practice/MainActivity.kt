@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     private val titleList = mutableListOf("首页", "发现", "我的")
     private val fragmentList = mutableListOf(
-        HomeFragment1(),
+        HomeFragment(),
         DiscoverFragment(),
         MineFragment()
     )
