@@ -29,3 +29,4 @@ proguard/
 .idea/
 *.iml
 *.gpg
+maven_push.gradle
