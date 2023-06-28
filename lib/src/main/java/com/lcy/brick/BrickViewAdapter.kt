@@ -54,7 +54,7 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
     /**
      * 所有数据源.
      */
-    private var allData = mutableListOf<Any>()
+    var allData = mutableListOf<Any>()
 
     /**
      * Manager 映射.

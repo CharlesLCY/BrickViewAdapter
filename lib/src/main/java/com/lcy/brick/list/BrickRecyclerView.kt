@@ -36,11 +36,6 @@ class BrickRecyclerView : FrameLayout {
     var adapter = BrickViewAdapter()
 
     /**
-     * 列表数据源
-     */
-    var listData = mutableListOf<Any>()
-
-    /**
      * 分页加载条数，默认为15
      */
     var pageSize = 15
@@ -114,6 +109,11 @@ class BrickRecyclerView : FrameLayout {
     fun getEmptyLayout() = binding.emptyLayout
 
     /**
+     * 获取列表数据源
+     */
+    fun getListData() = adapter.allData
+
+    /**
      * 设置刷新监听
      */
     fun setOnRefreshListener(onRefresh: (Boolean) -> Unit = {}) {
@@ -143,13 +143,12 @@ class BrickRecyclerView : FrameLayout {
                 // 显示空布局
                 showEmptyLayout()
                 binding.smartRefreshLayout.finishRefreshWithNoMoreData()
-                listData.clear()
-                adapter.setAllData(listData)
+                adapter.allData.clear()
+                adapter.notifyDataSetChanged()
             } else {
                 // 隐藏空布局
                 hideEmptyLayout()
-                this.listData = dataList
-                adapter.setAllData(listData)
+                adapter.setAllData(dataList)
                 // 显示已经到底了
                 if (dataList.size < pageSize) {
                     binding.smartRefreshLayout.finishRefreshWithNoMoreData()
@@ -161,8 +160,7 @@ class BrickRecyclerView : FrameLayout {
         } else {
             // 上拉加载更多
             if (!dataList.isNullOrEmpty()) {
-                this.listData.addAll(dataList)
-                adapter.setAllData(listData)
+                adapter.addData(dataList)
             }
             // 显示已经到底了
             if (dataList.isNullOrEmpty() || dataList.size < pageSize) {
