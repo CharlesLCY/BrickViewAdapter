@@ -111,7 +111,7 @@ class BrickRecyclerView : FrameLayout {
     /**
      * 获取列表数据源
      */
-    fun getListData() = adapter.allData
+    fun getListData() = adapter.dataList
 
     /**
      * 设置刷新监听
@@ -143,7 +143,7 @@ class BrickRecyclerView : FrameLayout {
                 // 显示空布局
                 showEmptyLayout()
                 binding.smartRefreshLayout.finishRefreshWithNoMoreData()
-                adapter.allData.clear()
+                adapter.dataList.clear()
                 adapter.notifyDataSetChanged()
             } else {
                 // 隐藏空布局

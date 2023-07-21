@@ -54,7 +54,7 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
     /**
      * 所有数据源.
      */
-    var allData = mutableListOf<Any>()
+    var dataList = mutableListOf<Any>()
 
     /**
      * Manager 映射.
@@ -101,7 +101,7 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
     @SuppressLint("NotifyDataSetChanged")
     fun setAllData(listData: MutableList<Any>) {
         // 绑定数据
-        allData = listData
+        dataList = listData
         // 刷新数据
         notifyDataSetChanged()
         // 自动滚动
@@ -112,7 +112,7 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
     fun addData(listData: MutableList<Any>) {
-        allData.addAll(listData)
+        dataList.addAll(listData)
         // 刷新数据
         notifyDataSetChanged()
     }
@@ -121,7 +121,7 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
      * 局部更新
      */
     fun setDiffData(dataList: MutableList<Any>) {
-        allData = dataList
+        this.dataList = dataList
     }
 
     /**
@@ -235,7 +235,7 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
      * @return 数据集总数.
      */
     override fun getItemCount(): Int {
-        return allData.size
+        return dataList.size
     }
 
     /**
@@ -245,9 +245,9 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
      * @return View Type 分类数值,每个数值代表一个类型.
      */
     override fun getItemViewType(position: Int): Int {
-        val obj = allData[position]
+        val obj = dataList[position]
         var viewType = managers.indexOfKey(obj.javaClass.name)
-        if (viewType > 0 && obj is BrickViewSupport) {
+        if (viewType >= 0 && obj is BrickViewSupport) {
             if (!managers.contains(obj.javaClass.name + obj.layoutCode)) {
                 managers[obj.javaClass.name + obj.layoutCode] = managers[managers.keyAt(viewType)]
             }
@@ -310,7 +310,7 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
         payloads: MutableList<Any>
     ) {
         // 获取指定下标的数据
-        var obj = allData[position]
+        var obj = dataList[position]
         // 尝试通过类名从管理器映射中获取管理器对象
         var manager: BrickViewManager<Any>?
         // 如果获取失败, 则判断是否支持多布局模式,如果支持则重新获取多布局模式管理器.
@@ -334,7 +334,7 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
         }
         if (payloads.isEmpty()) {
             // 通过管理器,绑定 VH 对象实例.
-            manager.onBindViewHolder(holder, allData.size, position, obj)
+            manager.onBindViewHolder(holder, dataList.size, position, obj)
         } else {
             manager.onBindViewHolder(holder, position, obj, payloads)
         }
@@ -400,12 +400,12 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
             target: RecyclerView.ViewHolder
         ): Boolean {
             if (null != onBrickViewDragListener && onBrickViewDragListener!!.canMove(
-                    allData,
+                    dataList,
                     viewHolder.adapterPosition,
                     target.adapterPosition
                 )
             ) {
-                Collections.swap(allData, viewHolder.adapterPosition, target.adapterPosition)
+                Collections.swap(dataList, viewHolder.adapterPosition, target.adapterPosition)
                 notifyItemMoved(viewHolder.adapterPosition, target.adapterPosition)
                 return true
             }
@@ -414,11 +414,11 @@ class BrickViewAdapter : RecyclerView.Adapter<BrickViewHolder>() {
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             if (null != onBrickViewDragListener && onBrickViewDragListener!!.canRemove(
-                    allData,
+                    dataList,
                     viewHolder.adapterPosition
                 )
             ) {
-                allData.removeAt(viewHolder.adapterPosition)
+                dataList.removeAt(viewHolder.adapterPosition)
                 notifyItemRemoved(viewHolder.adapterPosition)
             }
         }
